@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand & Accent */
+  --color-primary: #0a0a0a;
+  --color-brand-pink: #ff4d8b;
+  --color-brand-teal: #1a3a3a;
+  --color-brand-lavender: #b8a4ed;
+  --color-brand-peach: #ffb084;
+  --color-brand-ochre: #e8b94a;
+  --color-brand-mint: #a4d4c5;
+  --color-brand-coral: #ff6b5a;
+
+  /* Surface */
+  --color-canvas: #fffaf0;
+  --color-surface-soft: #faf5e8;
+  --color-surface-card: #f5f0e0;
+  --color-surface-strong: #ebe6d6;
+  --color-surface-dark: #0a1a1a;
+  --color-surface-dark-elevated: #1a2a2a;
+  --color-hairline: #e5e5e5;
+
+  /* Text */
+  --color-ink: #0a0a0a;
+  --color-body-strong: #1a1a1a;
+  --color-body: #3a3a3a;
+  --color-muted: #6a6a6a;
+  --color-muted-soft: #9a9a9a;
+  --color-on-primary: #ffffff;
+
+  /* Semantic */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Display Typography — Plain Black / Inter 500 with negative letter-spacing */
+.clay-display-xl {
+  font-weight: 500;
+  line-height: 1.0;
+  letter-spacing: -2.5px;
+}
+
+.clay-display-lg {
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -2px;
+}
+
+.clay-display-md {
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.clay-display-sm {
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+}
+
+/* 6-Color Saturated Feature Card Palette */
+.feature-card-pink {
+  background-color: var(--color-brand-pink);
+  color: var(--color-on-primary);
+  border-radius: 24px;
+}
+
+.feature-card-teal {
+  background-color: var(--color-brand-teal);
+  color: var(--color-on-primary);
+  border-radius: 24px;
+}
+
+.feature-card-lavender {
+  background-color: var(--color-brand-lavender);
+  color: var(--color-ink);
+  border-radius: 24px;
+}
+
+.feature-card-peach {
+  background-color: var(--color-brand-peach);
+  color: var(--color-ink);
+  border-radius: 24px;
+}
+
+.feature-card-ochre {
+  background-color: var(--color-brand-ochre);
+  color: var(--color-ink);
+  border-radius: 24px;
+}
+
+.feature-card-cream {
+  background-color: var(--color-surface-card);
+  color: var(--color-ink);
+  border-radius: 24px;
+}
