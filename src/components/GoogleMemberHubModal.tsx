@@ -40,7 +40,7 @@ import {
   getWhatsAppShareUrl
 } from '../utils/birthdayUtils';
 import { fetchLiveGmailMessages } from '../utils/gmailApi';
-import { User } from 'firebase/auth';
+import { AppUser } from '../utils/googleAuth';
 
 interface GoogleMemberHubModalProps {
   person: BirthdayPerson;
@@ -51,7 +51,7 @@ interface GoogleMemberHubModalProps {
   onOpenCardStudio: (person: BirthdayPerson) => void;
   onAddGiftToPartyPool?: (giftTitle: string, estimatedPrice: number, personName: string) => void;
   googleAccessToken?: string | null;
-  googleUser?: User | null;
+  googleUser?: AppUser | null;
   onConnectGoogleAccount?: () => void;
 }
 

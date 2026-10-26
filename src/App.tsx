@@ -4,7 +4,10 @@ import {
   LogOut,
   AlertTriangle,
   X,
-  ExternalLink
+  ExternalLink,
+  UserPlus,
+  Trash2,
+  RotateCcw
 } from 'lucide-react';
 import { BirthdayPerson, PartyPlan, CustomEvent, InviteRecord } from './types/birthday';
 import {
@@ -28,9 +31,9 @@ import { GoogleMemberHubModal } from './components/GoogleMemberHubModal';
 import { FestivalsAndEventsView } from './components/FestivalsAndEventsView';
 import { AddEventModal } from './components/AddEventModal';
 import { InviteModal } from './components/InviteModal';
+import { AuthModal } from './components/AuthModal';
 import { ClayLogoMark, ClayHeroScene, ClayFooterMountains } from './components/ClayIllustrations';
-import { initAuth, googleSignIn, googleSignOut } from './utils/googleAuth';
-import { User } from 'firebase/auth';
+import { initAuth, googleSignOut, AppUser, getActiveLocalSession } from './utils/googleAuth';
 
 const HUB_CARD_VARIANTS = [
   'feature-card-lavender',
@@ -41,44 +44,68 @@ const HUB_CARD_VARIANTS = [
   'feature-card-teal'
 ];
 
+function getStorageKey(baseKey: string, uid?: string | null) {
+  return uid ? `${baseKey}_${uid}` : baseKey;
+}
+
+function loadUserBirthdays(uid?: string | null): BirthdayPerson[] {
+  try {
+    const saved = localStorage.getItem(getStorageKey('celebr_aite_birthdays', uid));
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      return parsed.map((p: BirthdayPerson) => {
+        const initial = INITIAL_BIRTHDAYS.find((i) => i.id === p.id);
+        if (initial && (!p.googleProfile || !p.googleConnected)) {
+          return {
+            ...p,
+            googleConnected: initial.googleConnected ?? true,
+            googleProfile: initial.googleProfile
+          };
+        }
+        return p;
+      });
+    }
+  } catch {
+    // fallback
+  }
+  return INITIAL_BIRTHDAYS;
+}
+
+function loadUserPartyPlan(uid?: string | null): PartyPlan {
+  try {
+    const saved = localStorage.getItem(getStorageKey('celebr_aite_party_plan', uid));
+    if (saved) return JSON.parse(saved);
+  } catch {
+    // fallback
+  }
+  return INITIAL_PARTY_PLAN;
+}
+
+function loadUserEvents(uid?: string | null): CustomEvent[] {
+  try {
+    const saved = localStorage.getItem(getStorageKey('celebr_aite_events', uid));
+    if (saved) return JSON.parse(saved);
+  } catch {
+    // fallback
+  }
+  return INITIAL_CUSTOM_EVENTS;
+}
+
+function loadUserInvites(uid?: string | null): InviteRecord[] {
+  try {
+    const saved = localStorage.getItem(getStorageKey('celebr_aite_invites', uid));
+    if (saved) return JSON.parse(saved);
+  } catch {
+    // fallback
+  }
+  return INITIAL_INVITES;
+}
+
 export default function App() {
-  // Persistence
-  const [birthdays, setBirthdays] = useState<BirthdayPerson[]>(() => {
-    try {
-      const saved = localStorage.getItem('celebr_aite_birthdays');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        return parsed.map((p: BirthdayPerson) => {
-          const initial = INITIAL_BIRTHDAYS.find((i) => i.id === p.id);
-          if (initial && (!p.googleProfile || !p.googleConnected)) {
-            return {
-              ...p,
-              googleConnected: initial.googleConnected ?? true,
-              googleProfile: initial.googleProfile
-            };
-          }
-          return p;
-        });
-      }
-    } catch {
-      // fallback
-    }
-    return INITIAL_BIRTHDAYS;
-  });
-
-  const [partyPlan, setPartyPlan] = useState<PartyPlan>(() => {
-    try {
-      const saved = localStorage.getItem('celebr_aite_party_plan');
-      if (saved) return JSON.parse(saved);
-    } catch {
-      // fallback
-    }
-    return INITIAL_PARTY_PLAN;
-  });
-
-  // Google Auth state
-  const [googleUser, setGoogleUser] = useState<User | null>(null);
-  const [isSigningInGoogle, setIsSigningInGoogle] = useState(false);
+  // User Auth State
+  const [googleUser, setGoogleUser] = useState<AppUser | null>(() => getActiveLocalSession());
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'signin' | 'register'>('register');
   const [authError, setAuthError] = useState<{
     code?: string;
     title: string;
@@ -87,108 +114,111 @@ export default function App() {
     actionLabel?: string;
   } | null>(null);
 
+  // Per-User Persistence
+  const [birthdays, setBirthdays] = useState<BirthdayPerson[]>(() =>
+    loadUserBirthdays(getActiveLocalSession()?.uid)
+  );
+  const [partyPlan, setPartyPlan] = useState<PartyPlan>(() =>
+    loadUserPartyPlan(getActiveLocalSession()?.uid)
+  );
+  const [events, setEvents] = useState<CustomEvent[]>(() =>
+    loadUserEvents(getActiveLocalSession()?.uid)
+  );
+  const [invites, setInvites] = useState<InviteRecord[]>(() =>
+    loadUserInvites(getActiveLocalSession()?.uid)
+  );
+
   useEffect(() => {
     initAuth(
-      (user) => setGoogleUser(user),
-      () => setGoogleUser(null)
+      (user) => {
+        setGoogleUser(user);
+        setBirthdays(loadUserBirthdays(user.uid));
+        setPartyPlan(loadUserPartyPlan(user.uid));
+        setEvents(loadUserEvents(user.uid));
+        setInvites(loadUserInvites(user.uid));
+      },
+      () => {
+        setGoogleUser(null);
+      }
     );
   }, []);
 
-  const handleGoogleSignIn = async () => {
-    setIsSigningInGoogle(true);
+  const handleOpenAuthModal = (mode: 'signin' | 'register' = 'register') => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
+  const handleAuthSuccess = (user: AppUser, isNewRegistration?: boolean, startEmpty?: boolean) => {
+    setGoogleUser(user);
     setAuthError(null);
-    try {
-      const res = await googleSignIn();
-      if (res) {
-        setGoogleUser(res.user);
+    if (isNewRegistration && startEmpty) {
+      setBirthdays([]);
+      setEvents([]);
+      try {
+        localStorage.setItem(getStorageKey('celebr_aite_birthdays', user.uid), JSON.stringify([]));
+        localStorage.setItem(getStorageKey('celebr_aite_events', user.uid), JSON.stringify([]));
+      } catch {
+        // ignore
       }
-    } catch (err: unknown) {
-      console.error('Sign in error:', err);
-      const authErr = err as { code?: string; message?: string };
-      const code = authErr?.code || '';
-      const rawMsg = authErr?.message || 'Failed to sign in with Google';
-
-      let title = 'Sign-in Failed';
-      let message = rawMsg;
-      let actionUrl: string | undefined;
-      let actionLabel: string | undefined;
-
-      const hostname = typeof window !== 'undefined' ? window.location.hostname : 'pookiecal.com';
-
-      if (code === 'auth/unauthorized-domain') {
-        title = 'Domain Not Authorized in Firebase';
-        message = `Firebase Authentication requires "${hostname}" to be listed under Authorized Domains. Please add "${hostname}" and "pookiecal.com" in Firebase Console.`;
-        actionUrl = 'https://console.firebase.google.com/project/gen-lang-client-0524691594/authentication/settings';
-        actionLabel = 'Open Firebase Settings';
-      } else if (code === 'auth/popup-blocked') {
-        title = 'Pop-up Window Blocked';
-        message = 'Your browser blocked the Google Sign-in pop-up. Please allow pop-ups for this site and click Sign in again.';
-      } else if (code === 'auth/popup-closed-by-user') {
-        title = 'Sign-in Closed';
-        message = 'The Google sign-in window was closed before completing authorization.';
-      } else if (code === 'auth/operation-not-allowed') {
-        title = 'Google Provider Not Enabled';
-        message = 'Google Sign-in is not enabled in Firebase Console. Go to Authentication > Sign-in method and enable Google.';
-        actionUrl = 'https://console.firebase.google.com/project/gen-lang-client-0524691594/authentication/providers';
-        actionLabel = 'Enable Google Provider';
-      } else if (code.includes('access_denied') || rawMsg.includes('access_denied') || rawMsg.includes('testing mode')) {
-        title = 'OAuth Test User Required';
-        message = 'Your Google Cloud OAuth consent screen is in Testing mode. Add your email to the Test users list in Google Cloud Console.';
-        actionUrl = 'https://console.cloud.google.com/apis/credentials/consent?project=gen-lang-client-0524691594';
-        actionLabel = 'Open OAuth Consent Screen';
-      }
-
-      setAuthError({
-        code,
-        title,
-        message,
-        actionUrl,
-        actionLabel
-      });
-    } finally {
-      setIsSigningInGoogle(false);
+    } else {
+      setBirthdays(loadUserBirthdays(user.uid));
+      setPartyPlan(loadUserPartyPlan(user.uid));
+      setEvents(loadUserEvents(user.uid));
+      setInvites(loadUserInvites(user.uid));
     }
+  };
+
+  const handleClearSampleData = () => {
+    setBirthdays([]);
+    setEvents([]);
+  };
+
+  const handleRestoreSampleData = () => {
+    setBirthdays(INITIAL_BIRTHDAYS);
+    setEvents(INITIAL_CUSTOM_EVENTS);
   };
 
   const handleGoogleSignOut = async () => {
     await googleSignOut();
     setGoogleUser(null);
+    setBirthdays(loadUserBirthdays(null));
+    setPartyPlan(loadUserPartyPlan(null));
+    setEvents(loadUserEvents(null));
+    setInvites(loadUserInvites(null));
   };
 
   useEffect(() => {
     try {
-      localStorage.setItem('celebr_aite_birthdays', JSON.stringify(birthdays));
+      localStorage.setItem(
+        getStorageKey('celebr_aite_birthdays', googleUser?.uid),
+        JSON.stringify(birthdays)
+      );
     } catch {
       // ignore
     }
-  }, [birthdays]);
+  }, [birthdays, googleUser?.uid]);
 
   useEffect(() => {
     try {
-      localStorage.setItem('celebr_aite_party_plan', JSON.stringify(partyPlan));
+      localStorage.setItem(
+        getStorageKey('celebr_aite_party_plan', googleUser?.uid),
+        JSON.stringify(partyPlan)
+      );
     } catch {
       // ignore
     }
-  }, [partyPlan]);
-
-  // Custom Events, Festivals & Visits state
-  const [events, setEvents] = useState<CustomEvent[]>(() => {
-    try {
-      const saved = localStorage.getItem('celebr_aite_events');
-      if (saved) return JSON.parse(saved);
-    } catch {
-      // fallback
-    }
-    return INITIAL_CUSTOM_EVENTS;
-  });
+  }, [partyPlan, googleUser?.uid]);
 
   useEffect(() => {
     try {
-      localStorage.setItem('celebr_aite_events', JSON.stringify(events));
+      localStorage.setItem(
+        getStorageKey('celebr_aite_events', googleUser?.uid),
+        JSON.stringify(events)
+      );
     } catch {
       // ignore
     }
-  }, [events]);
+  }, [events, googleUser?.uid]);
 
   const handleAddEvent = (newEvent: CustomEvent) => {
     setEvents((prev) => [newEvent, ...prev]);
@@ -208,24 +238,16 @@ export default function App() {
     setEvents((prev) => prev.filter((e) => e.id !== eventId));
   };
 
-  // Invites & Viral Referral Network State
-  const [invites, setInvites] = useState<InviteRecord[]>(() => {
-    try {
-      const saved = localStorage.getItem('celebr_aite_invites');
-      if (saved) return JSON.parse(saved);
-    } catch {
-      // fallback
-    }
-    return INITIAL_INVITES;
-  });
-
   useEffect(() => {
     try {
-      localStorage.setItem('celebr_aite_invites', JSON.stringify(invites));
+      localStorage.setItem(
+        getStorageKey('celebr_aite_invites', googleUser?.uid),
+        JSON.stringify(invites)
+      );
     } catch {
       // ignore
     }
-  }, [invites]);
+  }, [invites, googleUser?.uid]);
 
   const handleAddInvite = (newInvite: InviteRecord) => {
     setInvites((prev) => [newInvite, ...prev]);
@@ -343,34 +365,38 @@ export default function App() {
             ))}
           </nav>
 
-          {/* Right: "Sign in" (`button-text-link`) + "+ Add Birthday" (`button-primary`) */}
+          {/* Right: "Sign in / Register" + "+ Add Birthday" (`button-primary`) */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {googleUser ? (
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f5f0e0] text-[13px] font-medium text-[#0a0a0a]">
-                <span className="truncate max-w-[100px]">{googleUser.displayName || 'Connected'}</span>
+                <span className="w-2 h-2 rounded-full bg-[#2e9e6b]"></span>
+                <span className="truncate max-w-[110px] font-semibold">
+                  {googleUser.displayName || googleUser.email || 'Member'}
+                </span>
                 <button
                   onClick={handleGoogleSignOut}
                   title="Sign out"
-                  className="text-[#6a6a6a] hover:text-[#0a0a0a] cursor-pointer"
+                  className="text-[#6a6a6a] hover:text-[#0a0a0a] cursor-pointer ml-1"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                 </button>
               </div>
             ) : (
-              <button
-                onClick={handleGoogleSignIn}
-                disabled={isSigningInGoogle}
-                className="inline-flex items-center gap-1.5 text-[14px] font-medium text-[#0a0a0a] px-2.5 py-1.5 rounded-full hover:bg-[#f5f0e0] transition-colors cursor-pointer"
-              >
-                {isSigningInGoogle ? (
-                  <span className="flex items-center gap-1.5 text-[13px]">
-                    <span className="inline-block w-3.5 h-3.5 border-2 border-[#0a0a0a] border-t-transparent rounded-full animate-spin"></span>
-                    <span className="hidden sm:inline">Signing in...</span>
-                  </span>
-                ) : (
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => handleOpenAuthModal('signin')}
+                  className="inline-flex items-center gap-1.5 text-[14px] font-medium text-[#0a0a0a] px-3 py-2 rounded-full hover:bg-[#f5f0e0] transition-colors cursor-pointer"
+                >
                   <span>Sign in</span>
-                )}
-              </button>
+                </button>
+                <button
+                  onClick={() => handleOpenAuthModal('register')}
+                  className="hidden sm:inline-flex items-center gap-1.5 h-[40px] px-4 rounded-full bg-[#f5f0e0] hover:bg-[#eae3ce] text-[#0a0a0a] text-[13px] font-semibold transition-colors cursor-pointer"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>Register</span>
+                </button>
+              </div>
             )}
 
             <button
@@ -545,6 +571,27 @@ export default function App() {
                   ))}
                 </div>
               </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                {birthdays.length > 0 ? (
+                  <button
+                    onClick={handleClearSampleData}
+                    title="Clear sample contacts to start with an empty workspace"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#f5f0e0] hover:bg-[#eae3ce] text-[#3a3a3a] text-[12px] font-semibold cursor-pointer transition-colors"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Start Fresh (Clear All)</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleRestoreSampleData}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#f5f0e0] hover:bg-[#eae3ce] text-[#0a0a0a] text-[12px] font-semibold cursor-pointer transition-colors"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>Load Sample Circle</span>
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* 3-Up Saturated Feature Card Grid (`pink -> teal -> lavender -> peach -> ochre -> cream`) */}
@@ -563,19 +610,42 @@ export default function App() {
               </div>
             ) : (
               <div className="bg-[#f5f0e0] rounded-[24px] p-12 text-center max-w-md mx-auto space-y-3">
-                <h4 className="font-semibold text-[#0a0a0a] text-[18px]">No matches found</h4>
+                <h4 className="font-semibold text-[#0a0a0a] text-[18px]">
+                  {birthdays.length === 0 ? 'Your circle is ready!' : 'No matches found'}
+                </h4>
                 <p className="text-[14px] text-[#3a3a3a]">
-                  No people match "{searchQuery}".
+                  {birthdays.length === 0
+                    ? 'Add your first family member or friend birthday to start celebrating.'
+                    : `No people match "${searchQuery}".`}
                 </p>
-                <button
-                  onClick={() => {
-                    setSearchQuery('');
-                    setRelationshipFilter('all');
-                  }}
-                  className="h-[44px] px-5 bg-[#0a0a0a] text-white text-[14px] font-semibold rounded-[12px] cursor-pointer"
-                >
-                  Reset Filters
-                </button>
+                <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
+                  {birthdays.length === 0 ? (
+                    <>
+                      <button
+                        onClick={() => setIsAddModalOpen(true)}
+                        className="h-[44px] px-5 bg-[#0a0a0a] text-white text-[14px] font-semibold rounded-[12px] cursor-pointer"
+                      >
+                        + Add First Birthday
+                      </button>
+                      <button
+                        onClick={handleRestoreSampleData}
+                        className="h-[44px] px-4 bg-[#fffaf0] border border-[#e5e5e5] text-[#0a0a0a] text-[13px] font-semibold rounded-[12px] cursor-pointer"
+                      >
+                        Load Sample Circle
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setSearchQuery('');
+                        setRelationshipFilter('all');
+                      }}
+                      className="h-[44px] px-5 bg-[#0a0a0a] text-white text-[14px] font-semibold rounded-[12px] cursor-pointer"
+                    >
+                      Reset Filters
+                    </button>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -601,14 +671,14 @@ export default function App() {
 
                 {!googleUser ? (
                   <button
-                    onClick={handleGoogleSignIn}
+                    onClick={() => handleOpenAuthModal('signin')}
                     className="h-[44px] px-5 bg-[#0a0a0a] text-white text-[14px] font-semibold rounded-[12px] shrink-0 whitespace-nowrap cursor-pointer"
                   >
-                    Connect Google Account
+                    Sign In / Connect Account
                   </button>
                 ) : (
                   <span className="px-4 py-2 rounded-full bg-[#a4d4c5] text-[#0a0a0a] text-[13px] font-semibold shrink-0">
-                    Live Gmail Synced · {googleUser.email}
+                    Signed In · {googleUser.email || googleUser.displayName}
                   </span>
                 )}
               </div>
@@ -891,7 +961,7 @@ export default function App() {
             }));
           }}
           googleUser={googleUser}
-          onConnectGoogleAccount={handleGoogleSignIn}
+          onConnectGoogleAccount={() => handleOpenAuthModal('signin')}
         />
       )}
 
@@ -915,7 +985,14 @@ export default function App() {
         onAddInvite={handleAddInvite}
         onUpdateInvite={handleUpdateInvite}
         onAddBirthdayPerson={handleAddPerson}
-        senderName={googleUser?.displayName || 'Bhaskar'}
+        senderName={googleUser?.displayName || 'Your Circle'}
+      />
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        initialMode={authModalMode}
+        onClose={() => setIsAuthModalOpen(false)}
+        onSuccess={handleAuthSuccess}
       />
     </div>
   );
