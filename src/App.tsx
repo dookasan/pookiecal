@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
   Search,
-  LogOut
+  LogOut,
+  AlertTriangle,
+  X,
+  ExternalLink
 } from 'lucide-react';
 import { BirthdayPerson, PartyPlan, CustomEvent, InviteRecord } from './types/birthday';
 import {
@@ -76,6 +79,13 @@ export default function App() {
   // Google Auth state
   const [googleUser, setGoogleUser] = useState<User | null>(null);
   const [isSigningInGoogle, setIsSigningInGoogle] = useState(false);
+  const [authError, setAuthError] = useState<{
+    code?: string;
+    title: string;
+    message: string;
+    actionUrl?: string;
+    actionLabel?: string;
+  } | null>(null);
 
   useEffect(() => {
     initAuth(
@@ -86,13 +96,55 @@ export default function App() {
 
   const handleGoogleSignIn = async () => {
     setIsSigningInGoogle(true);
+    setAuthError(null);
     try {
       const res = await googleSignIn();
       if (res) {
         setGoogleUser(res.user);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Sign in error:', err);
+      const authErr = err as { code?: string; message?: string };
+      const code = authErr?.code || '';
+      const rawMsg = authErr?.message || 'Failed to sign in with Google';
+
+      let title = 'Sign-in Failed';
+      let message = rawMsg;
+      let actionUrl: string | undefined;
+      let actionLabel: string | undefined;
+
+      const hostname = typeof window !== 'undefined' ? window.location.hostname : 'pookiecal.com';
+
+      if (code === 'auth/unauthorized-domain') {
+        title = 'Domain Not Authorized in Firebase';
+        message = `Firebase Authentication requires "${hostname}" to be listed under Authorized Domains. Please add "${hostname}" and "pookiecal.com" in Firebase Console.`;
+        actionUrl = 'https://console.firebase.google.com/project/gen-lang-client-0524691594/authentication/settings';
+        actionLabel = 'Open Firebase Settings';
+      } else if (code === 'auth/popup-blocked') {
+        title = 'Pop-up Window Blocked';
+        message = 'Your browser blocked the Google Sign-in pop-up. Please allow pop-ups for this site and click Sign in again.';
+      } else if (code === 'auth/popup-closed-by-user') {
+        title = 'Sign-in Closed';
+        message = 'The Google sign-in window was closed before completing authorization.';
+      } else if (code === 'auth/operation-not-allowed') {
+        title = 'Google Provider Not Enabled';
+        message = 'Google Sign-in is not enabled in Firebase Console. Go to Authentication > Sign-in method and enable Google.';
+        actionUrl = 'https://console.firebase.google.com/project/gen-lang-client-0524691594/authentication/providers';
+        actionLabel = 'Enable Google Provider';
+      } else if (code.includes('access_denied') || rawMsg.includes('access_denied') || rawMsg.includes('testing mode')) {
+        title = 'OAuth Test User Required';
+        message = 'Your Google Cloud OAuth consent screen is in Testing mode. Add your email to the Test users list in Google Cloud Console.';
+        actionUrl = 'https://console.cloud.google.com/apis/credentials/consent?project=gen-lang-client-0524691594';
+        actionLabel = 'Open OAuth Consent Screen';
+      }
+
+      setAuthError({
+        code,
+        title,
+        message,
+        actionUrl,
+        actionLabel
+      });
     } finally {
       setIsSigningInGoogle(false);
     }
@@ -292,14 +344,14 @@ export default function App() {
           </nav>
 
           {/* Right: "Sign in" (`button-text-link`) + "+ Add Birthday" (`button-primary`) */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {googleUser ? (
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f5f0e0] text-[13px] font-medium text-[#0a0a0a]">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f5f0e0] text-[13px] font-medium text-[#0a0a0a]">
                 <span className="truncate max-w-[100px]">{googleUser.displayName || 'Connected'}</span>
                 <button
                   onClick={handleGoogleSignOut}
                   title="Sign out"
-                  className="text-[#6a6a6a] cursor-pointer"
+                  className="text-[#6a6a6a] hover:text-[#0a0a0a] cursor-pointer"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                 </button>
@@ -308,15 +360,22 @@ export default function App() {
               <button
                 onClick={handleGoogleSignIn}
                 disabled={isSigningInGoogle}
-                className="hidden sm:inline-block text-[14px] font-medium text-[#0a0a0a] px-2 cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-[14px] font-medium text-[#0a0a0a] px-2.5 py-1.5 rounded-full hover:bg-[#f5f0e0] transition-colors cursor-pointer"
               >
-                Sign in
+                {isSigningInGoogle ? (
+                  <span className="flex items-center gap-1.5 text-[13px]">
+                    <span className="inline-block w-3.5 h-3.5 border-2 border-[#0a0a0a] border-t-transparent rounded-full animate-spin"></span>
+                    <span className="hidden sm:inline">Signing in...</span>
+                  </span>
+                ) : (
+                  <span>Sign in</span>
+                )}
               </button>
             )}
 
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="h-[44px] px-5 bg-[#0a0a0a] text-[#ffffff] text-[14px] font-semibold rounded-[12px] whitespace-nowrap shrink-0 cursor-pointer"
+              className="h-[44px] px-4 sm:px-5 bg-[#0a0a0a] text-[#ffffff] text-[13px] sm:text-[14px] font-semibold rounded-[12px] whitespace-nowrap shrink-0 cursor-pointer"
             >
               + Add Birthday
             </button>
@@ -326,6 +385,44 @@ export default function App() {
 
       {/* Main Content Container (max-w-[1280px]) */}
       <main className="flex-1 max-w-[1280px] w-full mx-auto px-4 sm:px-8 py-8 sm:py-12">
+        {/* Auth Error Banner with Action Link */}
+        {authError && (
+          <div className="mb-6 p-4 sm:p-5 rounded-[16px] bg-[#fff0f3] border border-[#ff4d8b]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-3 min-w-0">
+              <div className="p-2 rounded-full bg-[#ff4d8b]/15 text-[#ff4d8b] shrink-0 mt-0.5 sm:mt-0">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-[15px] font-semibold text-[#0a0a0a]">
+                  {authError.title}
+                </h4>
+                <p className="text-[13px] text-[#4a4a4a] mt-0.5 leading-relaxed">
+                  {authError.message}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+              {authError.actionUrl && (
+                <a
+                  href={authError.actionUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 h-[38px] px-4 bg-[#0a0a0a] text-white text-[13px] font-semibold rounded-[10px] hover:bg-[#222] transition-colors"
+                >
+                  <span>{authError.actionLabel || 'Fix in Console'}</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
+              <button
+                onClick={() => setAuthError(null)}
+                className="h-[38px] px-2.5 text-[#6a6a6a] hover:text-[#0a0a0a] cursor-pointer"
+                title="Dismiss"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
         {/* Invitee Welcome Banner */}
         {inviteeBanner && (
           <div className="mb-6 px-5 py-4 rounded-[16px] bg-[#f5f0e0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
