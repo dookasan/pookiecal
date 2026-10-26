@@ -900,11 +900,37 @@ export default function App() {
           </div>
 
           <div className="space-y-2">
-            <p className="text-[12px] font-semibold uppercase tracking-[1.5px] text-[#0a0a0a]">Quick Actions</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[1.5px] text-[#0a0a0a]">Legal & Trust</p>
             <ul className="space-y-1.5 text-[14px] text-[#6a6a6a]">
-              <li><button onClick={() => setIsAddModalOpen(true)} className="hover:text-[#0a0a0a] cursor-pointer">+ Add Birthday</button></li>
-              <li><button onClick={() => setIsAddEventModalOpen(true)} className="hover:text-[#0a0a0a] cursor-pointer">+ Plan Visit</button></li>
+              <li>
+                <a href="/privacy" className="hover:text-[#0a0a0a] underline-offset-4 hover:underline">
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a href="/terms" className="hover:text-[#0a0a0a] underline-offset-4 hover:underline">
+                  Terms of Service
+                </a>
+              </li>
+              <li>
+                <button onClick={() => setIsAddModalOpen(true)} className="hover:text-[#0a0a0a] cursor-pointer">
+                  + Add Birthday
+                </button>
+              </li>
             </ul>
+          </div>
+        </div>
+
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-8 pb-6 flex flex-wrap items-center justify-between gap-4 text-[12px] text-[#6a6a6a] border-t border-[#e5e5e5]/70 pt-5">
+          <span>© {new Date().getFullYear()} PookieCal (pookiecal.com). All rights reserved.</span>
+          <div className="flex items-center gap-4">
+            <a href="/privacy" className="hover:text-[#0a0a0a] font-medium underline">
+              Privacy Policy
+            </a>
+            <span>·</span>
+            <a href="/terms" className="hover:text-[#0a0a0a] font-medium underline">
+              Terms of Service
+            </a>
           </div>
         </div>
 

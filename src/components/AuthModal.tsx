@@ -301,6 +301,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </svg>
           <span>Continue with Google</span>
         </button>
+
+        <p className="mt-4 text-center text-[11px] text-[#6a6a6a]">
+          By continuing, you agree to PookieCal's{' '}
+          <a href="/terms" target="_blank" rel="noopener noreferrer" className="underline text-[#0a0a0a] font-medium">
+            Terms of Service
+          </a>{' '}
+          and{' '}
+          <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline text-[#0a0a0a] font-medium">
+            Privacy Policy
+          </a>
+          .
+        </p>
       </div>
     </div>
   );
