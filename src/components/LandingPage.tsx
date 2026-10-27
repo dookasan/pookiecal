@@ -914,14 +914,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 {/* Featured Photo Card with Editorial Scrim */}
                 <div className="relative rounded-[24px] overflow-hidden bg-[#111B21] aspect-[16/10] border border-[#D6CFC0]">
                   <img
-                    src={activeLandingMemory.photo.url}
-                    alt={activeLandingMemory.photo.caption}
+                    src={activeLandingMemory.photoUrl}
+                    alt={activeLandingMemory.caption}
+                    referrerPolicy="no-referrer"
                     onError={(e) => {
                       const target = e.currentTarget;
                       target.onerror = null;
                       target.src = buildFallbackMemorySvgDataUrl(
-                        activeLandingMemory.person.name,
-                        activeLandingMemory.photo.caption
+                        activeLandingMemory.personName,
+                        activeLandingMemory.caption,
+                        activeLandingMemory.album,
+                        activeMemoryIdx
                       );
                     }}
                     className="w-full h-full object-cover"
@@ -930,7 +933,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
                   <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2">
                     <span className="px-3 py-1 rounded-full bg-[#111B21]/80 text-[#FCFBF7] text-[11px] font-semibold">
-                      {activeLandingMemory.timeAgoBadge} · {activeLandingMemory.photo.albumName}
+                      {activeLandingMemory.timeAgoBadge} · {activeLandingMemory.album}
                     </span>
                     <span className="px-3 py-1 rounded-full bg-[#FF4D8B] text-white text-[11px] font-semibold">
                       {activeLandingMemory.daysUntilBirthday === 0
@@ -941,10 +944,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
                   <div className="absolute bottom-4 left-4 right-4 text-white space-y-1">
                     <div className="text-[12px] text-[#A4D4C5] font-medium">
-                      {activeLandingMemory.person.name} ({activeLandingMemory.person.relationship}) · {activeLandingMemory.photo.dateTaken}
+                      {activeLandingMemory.personName} ({activeLandingMemory.relationship}) · {activeLandingMemory.date}
                     </div>
                     <p className="text-[18px] sm:text-[20px] font-bold leading-snug">
-                      “{activeLandingMemory.photo.caption}”
+                      “{activeLandingMemory.caption}”
                     </p>
                   </div>
                 </div>
@@ -963,7 +966,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                             : 'bg-[#FCFBF7] border border-[#D6CFC0] text-[#374248] hover:text-[#111B21]'
                         }`}
                       >
-                        {mem.person.name.split(' ')[0]}
+                        {mem.personName.split(' ')[0]}
                       </button>
                     ))}
                   </div>
@@ -971,7 +974,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => onOpenGoogleHub(activeLandingMemory.person, 'photos')}
+                      onClick={() => onOpenGoogleHub(activeLandingMemory.personRef, 'photos')}
                       className="h-[38px] px-4 rounded-full bg-[#FF4D8B] text-white text-[12px] font-semibold inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
                     >
                       <Camera className="w-3.5 h-3.5" />
@@ -1006,7 +1009,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </button>
                   <button
                     type="button"
-                    onClick={() => onOpenGoogleHub(activeLandingMemory.person, 'photos')}
+                    onClick={() => onOpenGoogleHub(activeLandingMemory.personRef, 'photos')}
                     className="h-[46px] px-6 rounded-full bg-[#F4EFE6] hover:bg-[#EAE3D5] text-[#111B21] text-[14px] font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                   >
                     Open Google Hub Photos

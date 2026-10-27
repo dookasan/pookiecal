@@ -19,18 +19,21 @@ import {
 import { getWhatsAppShareUrl } from '../utils/birthdayUtils';
 
 interface MemoriesOfTheDayCardProps {
-  contacts: BirthdayPerson[];
+  contacts?: BirthdayPerson[];
+  birthdays?: BirthdayPerson[];
   onOpenGoogleHub: (person: BirthdayPerson, initialTab?: 'all' | 'gmail' | 'chat' | 'photos' | 'youtube' | 'suggestions') => void;
   onOpenCardStudio: (person: BirthdayPerson) => void;
   onAddPhotoMemory?: (personId: string, newPhoto: GooglePhotoItem) => void;
 }
 
 export const MemoriesOfTheDayCard: React.FC<MemoriesOfTheDayCardProps> = ({
-  contacts,
+  contacts: contactsProp,
+  birthdays: birthdaysProp,
   onOpenGoogleHub,
   onOpenCardStudio,
   onAddPhotoMemory
 }) => {
+  const contacts = contactsProp || birthdaysProp || [];
   const memories = getCircleMemoriesOfTheDay(contacts);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAddingMemory, setIsAddingMemory] = useState(false);
