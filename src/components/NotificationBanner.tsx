@@ -73,7 +73,7 @@ export const NotificationBanner: React.FC<NotificationBannerProps> = ({
       <div className="flex items-center gap-3 text-[15px] text-[#1a1a1a] min-w-0">
         {todayBirthdays.length > 0 ? (
           <p className="truncate">
-            <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#ff4d8b] text-white text-[12px] font-semibold mr-2">
+            <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#ff5722] text-white text-[12px] font-semibold mr-2">
               TODAY
             </span>
             <strong className="font-semibold text-[#0a0a0a]">{todayBirthdays.map((b) => b.name).join(', ')}</strong>'s birthday

@@ -506,7 +506,7 @@ export const GoogleMemberHubModal: React.FC<GoogleMemberHubModalProps> = ({
                   onClose();
                   onOpenCardStudio(person);
                 }}
-                className="h-[40px] px-4 rounded-[12px] bg-[#ff4d8b] text-[#ffffff] text-[13px] font-semibold inline-flex items-center gap-1.5 cursor-pointer"
+                className="h-[40px] px-4 rounded-[12px] bg-[#ff5722] text-[#ffffff] text-[13px] font-semibold inline-flex items-center gap-1.5 cursor-pointer"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Wish Studio</span>
@@ -1078,7 +1078,7 @@ export const GoogleMemberHubModal: React.FC<GoogleMemberHubModalProps> = ({
                         setCurrentSlideIndex(0);
                         setSlideshowActive(true);
                       }}
-                      className="h-[44px] px-4 bg-[#ff4d8b] text-[#ffffff] rounded-[12px] text-[13px] font-semibold inline-flex items-center gap-1.5 cursor-pointer"
+                      className="h-[44px] px-4 bg-[#ff5722] text-[#ffffff] rounded-[12px] text-[13px] font-semibold inline-flex items-center gap-1.5 cursor-pointer"
                     >
                       <Play className="w-3.5 h-3.5 fill-white" />
                       <span>Play Memory Reel</span>
@@ -1194,7 +1194,7 @@ export const GoogleMemberHubModal: React.FC<GoogleMemberHubModalProps> = ({
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/15" />
                     <div className="relative z-10 p-5 sm:p-6 h-full flex flex-col justify-between">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="px-3.5 py-1.5 rounded-full bg-[#FF4D8B] text-white text-[12px] font-semibold">
+                        <span className="px-3.5 py-1.5 rounded-full bg-[#FF5722] text-white text-[12px] font-semibold">
                           {activeMemoryOfDay.timeAgoBadge}
                         </span>
                         <span className="px-3 py-1 rounded-full bg-black/55 text-white/90 text-[12px] font-medium tabular-nums">
@@ -1320,7 +1320,7 @@ export const GoogleMemberHubModal: React.FC<GoogleMemberHubModalProps> = ({
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       {idx === 0 && (
-                        <div className="absolute top-3 left-3 px-2.5 py-1 bg-[#FF4D8B] text-white text-[11px] font-semibold rounded-full">
+                        <div className="absolute top-3 left-3 px-2.5 py-1 bg-[#FF5722] text-white text-[11px] font-semibold rounded-full">
                           Today’s Highlight
                         </div>
                       )}

@@ -490,9 +490,9 @@ export default function App() {
       <main className="flex-1 max-w-[1280px] w-full mx-auto px-4 sm:px-8 py-8 sm:py-12">
         {/* Auth Error Banner with Action Link */}
         {authError && (
-          <div className="mb-6 p-4 sm:p-5 rounded-[16px] bg-[#fff0f3] border border-[#ff4d8b]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="mb-6 p-4 sm:p-5 rounded-[16px] bg-[#fff3ee] border border-[#ff5722]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-start gap-3 min-w-0">
-              <div className="p-2 rounded-full bg-[#ff4d8b]/15 text-[#ff4d8b] shrink-0 mt-0.5 sm:mt-0">
+              <div className="p-2 rounded-full bg-[#ff5722]/15 text-[#ff5722] shrink-0 mt-0.5 sm:mt-0">
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <div>

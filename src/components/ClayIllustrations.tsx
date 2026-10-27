@@ -9,9 +9,9 @@ export const ClayLogoMark: React.FC = () => (
   <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>
       <radialGradient id="clayPinkSphere" cx="35%" cy="30%" r="70%">
-        <stop offset="0%" stopColor="#ff8fb8" />
-        <stop offset="55%" stopColor="#ff4d8b" />
-        <stop offset="100%" stopColor="#c8235c" />
+        <stop offset="0%" stopColor="#ff8a50" />
+        <stop offset="55%" stopColor="#ff5722" />
+        <stop offset="100%" stopColor="#c43000" />
       </radialGradient>
       <radialGradient id="clayOchreCube" cx="30%" cy="25%" r="75%">
         <stop offset="0%" stopColor="#fae08c" />
@@ -94,11 +94,11 @@ export const ClayHeroScene: React.FC<ClayHeroSceneProps> = ({
             <stop offset="100%" stopColor="#6aa693" />
           </radialGradient>
 
-          {/* 3D Clay Pink Mascot */}
+          {/* 3D Clay Vibrant Tangerine Mascot */}
           <radialGradient id="mascotPink" cx="35%" cy="28%" r="70%">
-            <stop offset="0%" stopColor="#ff94b9" />
-            <stop offset="55%" stopColor="#ff4d8b" />
-            <stop offset="100%" stopColor="#c4215a" />
+            <stop offset="0%" stopColor="#ff8a50" />
+            <stop offset="55%" stopColor="#ff5722" />
+            <stop offset="100%" stopColor="#c43000" />
           </radialGradient>
 
           {/* 3D Clay Sun */}
@@ -197,7 +197,7 @@ export const ClayHeroScene: React.FC<ClayHeroSceneProps> = ({
 
           {/* Mini 3D Birthday Cake held by Mascot */}
           <rect x="24" y="92" width="48" height="22" rx="8" fill="#fffaf0" stroke="#e5e5e5" strokeWidth="1.5" />
-          <path d="M26 100 Q34 106 40 100 Q48 106 56 100 Q64 106 70 100" stroke="#ff4d8b" strokeWidth="3" strokeLinecap="round" fill="none" />
+          <path d="M26 100 Q34 106 40 100 Q48 106 56 100 Q64 106 70 100" stroke="#ff5722" strokeWidth="3" strokeLinecap="round" fill="none" />
           {/* Candle */}
           <rect x="45" y="80" width="6" height="12" rx="3" fill="#e8b94a" />
           <circle cx="48" cy="76" r="4" fill="#ff6b5a" />

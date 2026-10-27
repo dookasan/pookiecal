@@ -150,7 +150,7 @@ export const PartyPlannerView: React.FC<PartyPlannerViewProps> = ({
         <div className="space-y-2">
           <div className="flex items-center gap-2.5 flex-wrap">
             {partyPlan.isSurprise && (
-              <span className="px-3 py-1 rounded-full bg-[#ff4d8b] text-white text-[12px] font-semibold uppercase tracking-[1px]">
+              <span className="px-3 py-1 rounded-full bg-[#ff5722] text-white text-[12px] font-semibold uppercase tracking-[1px]">
                 Surprise Party
               </span>
             )}

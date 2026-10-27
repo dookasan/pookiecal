@@ -33,7 +33,7 @@ export function buildFallbackMemorySvgDataUrl(
   paletteIndex = 0
 ): string {
   const palettes = [
-    { bg: '#111B21', card: '#1D2B34', accent: '#FF4D8B', secondary: '#A4D4C5', text: '#FCFBF7' },
+    { bg: '#111B21', card: '#1D2B34', accent: '#FF5722', secondary: '#A4D4C5', text: '#FCFBF7' },
     { bg: '#22182E', card: '#312342', accent: '#FFB084', secondary: '#B8A4ED', text: '#FCFBF7' },
     { bg: '#162925', card: '#213D37', accent: '#A4D4C5', secondary: '#E8B94A', text: '#FCFBF7' }
   ];

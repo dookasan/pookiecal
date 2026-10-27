@@ -53,11 +53,11 @@ interface LandingPageProps {
 const PREVIEW_THEMES = [
   {
     id: 'coral',
-    name: 'Warm Coral',
-    bg: 'bg-[#FF4D8B]',
+    name: 'Vibrant Tangerine',
+    bg: 'bg-[#FF5722]',
     text: 'text-white',
     sub: 'text-white/85',
-    border: 'border-[#e03873]'
+    border: 'border-[#D84315]'
   },
   {
     id: 'matcha',
@@ -127,7 +127,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
     birthDate: '1995-11-04',
     phone: '+15552345678',
     relationship: 'family' as Relationship,
-    avatarColor: 'from-pink-500 to-rose-500',
+    avatarColor: 'from-orange-500 to-amber-500',
     avatarEmoji: '🎂',
     reminders: {
       sameDay: true,
@@ -153,7 +153,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       birthDate: calcDate,
       phone: calcPhone.trim() || '+15550001234',
       relationship: calcRelation,
-      avatarColor: 'from-pink-500 to-rose-500',
+      avatarColor: 'from-orange-500 to-amber-500',
       avatarEmoji: calcRelation === 'family' ? '🏡' : calcRelation === 'partner' ? '💖' : '🎉',
       notes: `Added from PookieCal Countdown Calculator (${calcZodiac.symbol} ${calcZodiac.sign})`,
       favoriteThings: ['Artisan Coffee', 'Handwritten Notes', 'Family Dinner'],
@@ -238,7 +238,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               type="button"
               onClick={() => onLaunchApp('wall')}
-              className="h-[42px] px-5 rounded-full bg-[#FF4D8B] hover:bg-[#e83c78] text-white text-[14px] font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="h-[42px] px-5 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[14px] font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
               {googleUser ? `Open Workspace · ${googleUser.displayName?.split(' ')[0]}` : 'Launch PookieCal'}
             </button>
@@ -281,7 +281,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <button
                       type="button"
                       onClick={() => onLaunchApp('wall')}
-                      className="h-[48px] px-7 rounded-full bg-[#FF4D8B] hover:bg-[#e83c78] text-white text-[15px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                      className="h-[48px] px-7 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[15px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                     >
                       <span>Launch PookieCal Free</span>
                       <ArrowRight className="w-4 h-4" />
@@ -341,7 +341,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <div className="rounded-[20px] bg-[#FCFBF7] text-[#111B21] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 text-[12px] text-[#525E66] tabular-nums">
-                        <span className="font-semibold text-[#FF4D8B]">Reminder · 9:00 AM</span>
+                        <span className="font-semibold text-[#FF5722]">Reminder · 9:00 AM</span>
                         <span aria-hidden="true">·</span>
                         <span>Family Circle</span>
                       </div>
@@ -356,7 +356,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       <button
                         type="button"
                         onClick={() => onOpenCardStudio(featuredPerson)}
-                        className="h-[36px] px-3.5 rounded-full bg-[#FF4D8B] text-white text-[12px] font-semibold whitespace-nowrap shrink-0 cursor-pointer"
+                        className="h-[36px] px-3.5 rounded-full bg-[#FF5722] text-white text-[12px] font-semibold whitespace-nowrap shrink-0 cursor-pointer"
                       >
                         Send Card
                       </button>
@@ -399,7 +399,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                         <span className="font-mono font-semibold text-[#111B21]">$185 / $220 funded</span>
                       </div>
                       <div className="w-full h-2 rounded-full bg-[#E6E0D3] overflow-hidden">
-                        <div className="h-full bg-[#FF4D8B] rounded-full" style={{ width: '84%' }} />
+                        <div className="h-full bg-[#FF5722] rounded-full" style={{ width: '84%' }} />
                       </div>
                       <p className="text-[12px] text-[#4A5560]">
                         4 friends chipped in for Espresso Machine · 6 RSVPs confirmed
@@ -502,7 +502,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               {/* Left 6 Cols: Interactive Input Form */}
               <div className="lg:col-span-6 space-y-5">
-                <div className="text-[13px] font-semibold text-[#FF4D8B]">
+                <div className="text-[13px] font-semibold text-[#FF5722]">
                   Interactive Live Preview Tool
                 </div>
                 <h2 className="text-[28px] sm:text-[36px] font-bold text-[#111B21] tracking-tight leading-[1.12]">
@@ -631,7 +631,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </div>
 
                     <div className="text-right shrink-0">
-                      <div className="text-[32px] font-bold text-[#FF4D8B] font-mono tabular-nums leading-none">
+                      <div className="text-[32px] font-bold text-[#FF5722] font-mono tabular-nums leading-none">
                         {calcDays === 0 ? 'TODAY' : `${calcDays}d`}
                       </div>
                       <div className="text-[12px] text-[#525E66] mt-1">
@@ -740,7 +740,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             {/* Right 6 Cols: Editorial Storytelling Copy */}
             <div className="lg:col-span-6 space-y-5">
-              <div className="text-[14px] font-semibold text-[#FF4D8B]">
+              <div className="text-[14px] font-semibold text-[#FF5722]">
                 01. Custom Greeting Studio &amp; 1-Tap Calling
               </div>
               <h2
@@ -756,7 +756,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <button
                   type="button"
                   onClick={() => onOpenCardStudio(featuredPerson)}
-                  className="h-[46px] px-6 rounded-full bg-[#FF4D8B] hover:bg-[#e83c78] text-white text-[14px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                  className="h-[46px] px-6 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[14px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                 >
                   <span>Open Greeting Card Studio</span>
                   <ArrowRight className="w-4 h-4" />
@@ -875,7 +875,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="lg:col-span-6 rounded-[32px] bg-[#F4EFE6] border border-[#E6E0D3] p-6 sm:p-8 space-y-5">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <div className="text-[12px] font-semibold text-[#FF4D8B] uppercase tracking-wider">
+                    <div className="text-[12px] font-semibold text-[#FF5722] uppercase tracking-wider">
                       Memories of the Day · Google Photos Sync
                     </div>
                     <h3 className="text-[20px] font-bold text-[#111B21] mt-0.5">
@@ -935,7 +935,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <span className="px-3 py-1 rounded-full bg-[#111B21]/80 text-[#FCFBF7] text-[11px] font-semibold">
                       {activeLandingMemory.timeAgoBadge} · {activeLandingMemory.album}
                     </span>
-                    <span className="px-3 py-1 rounded-full bg-[#FF4D8B] text-white text-[11px] font-semibold">
+                    <span className="px-3 py-1 rounded-full bg-[#FF5722] text-white text-[11px] font-semibold">
                       {activeLandingMemory.daysUntilBirthday === 0
                         ? 'Birthday Today!'
                         : `Birthday in ${activeLandingMemory.daysUntilBirthday}d`}
@@ -975,7 +975,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <button
                       type="button"
                       onClick={() => onOpenGoogleHub(activeLandingMemory.personRef, 'photos')}
-                      className="h-[38px] px-4 rounded-full bg-[#FF4D8B] text-white text-[12px] font-semibold inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
+                      className="h-[38px] px-4 rounded-full bg-[#FF5722] text-white text-[12px] font-semibold inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
                     >
                       <Camera className="w-3.5 h-3.5" />
                       <span>Open in Google Hub Photos</span>
@@ -986,7 +986,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               {/* Right 6 Cols: Editorial Copy for Memories of the Day */}
               <div className="lg:col-span-6 space-y-5">
-                <div className="text-[14px] font-semibold text-[#FF4D8B]">
+                <div className="text-[14px] font-semibold text-[#FF5722]">
                   03. Memories of the Day &amp; Photo Card Highlights
                 </div>
                 <h2
@@ -1051,7 +1051,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </div>
 
                   <div className="p-5 rounded-[20px] bg-[#1A2730] border border-white/10 space-y-1.5">
-                    <div className="flex items-center gap-2 text-[#FF4D8B] font-semibold text-[14px]">
+                    <div className="flex items-center gap-2 text-[#FF5722] font-semibold text-[14px]">
                       <ShieldCheck className="w-4 h-4" />
                       <span>No Restricted-Scope Lockouts</span>
                     </div>
@@ -1095,7 +1095,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <button
                       type="button"
                       onClick={() => onOpenGoogleHub(featuredPerson)}
-                      className="h-[38px] px-4 rounded-full bg-[#FF4D8B] text-white text-[12px] font-semibold whitespace-nowrap shrink-0 cursor-pointer"
+                      className="h-[38px] px-4 rounded-full bg-[#FF5722] text-white text-[12px] font-semibold whitespace-nowrap shrink-0 cursor-pointer"
                     >
                       Open Live Hub →
                     </button>
@@ -1125,7 +1125,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </button>
 
                     <div className="p-4 rounded-[16px] bg-[#111B21] border border-white/10 space-y-1">
-                      <div className="text-[#FF4D8B] font-semibold flex items-center gap-1.5">
+                      <div className="text-[#FF5722] font-semibold flex items-center gap-1.5">
                         <Gift className="w-3.5 h-3.5" />
                         <span>Smart Gifts</span>
                       </div>
@@ -1180,7 +1180,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <span>$185 / $220</span>
                   </div>
                   <div className="w-full h-2 rounded-full bg-[#E6E0D3] overflow-hidden">
-                    <div className="h-full bg-[#FF4D8B] rounded-full" style={{ width: '84%' }} />
+                    <div className="h-full bg-[#FF5722] rounded-full" style={{ width: '84%' }} />
                   </div>
                   <div className="text-[12px] text-[#525E66]">
                     Contributors: Rohan ($60) · Ananya ($50) · Vikram ($75)
@@ -1221,7 +1221,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             {/* Right 6 Cols: Copy */}
             <div className="lg:col-span-6 space-y-5">
-              <div className="text-[14px] font-semibold text-[#FF4D8B]">
+              <div className="text-[14px] font-semibold text-[#FF5722]">
                 04. Group Gift Pools &amp; WhatsApp Circle Invites
               </div>
               <h2
@@ -1237,7 +1237,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <button
                   type="button"
                   onClick={() => onLaunchApp('party')}
-                  className="h-[46px] px-6 rounded-full bg-[#FF4D8B] hover:bg-[#e83c78] text-white text-[14px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                  className="h-[46px] px-6 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[14px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                 >
                   <span>Coordinate a Party Pool</span>
                   <ArrowRight className="w-4 h-4" />
@@ -1319,7 +1319,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <button
                 type="button"
                 onClick={() => onLaunchApp('wall')}
-                className="h-[48px] px-7 rounded-full bg-[#FF4D8B] hover:bg-[#e83c78] text-white text-[15px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                className="h-[48px] px-7 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[15px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
               >
                 <span>Launch PookieCal App</span>
                 <ArrowRight className="w-4 h-4" />

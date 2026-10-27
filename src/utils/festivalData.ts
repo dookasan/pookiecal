@@ -172,7 +172,7 @@ export const FESTIVALS_CATALOG: FestivalCatalogItem[] = [
     date: '2027-02-14',
     emoji: '🌹',
     category: 'global',
-    color: 'from-rose-500 to-pink-600',
+    color: 'from-orange-500 to-red-600',
     description: 'A celebration of romance, affection, cherished friendships, and heartfelt appreciation.',
     traditions: ['Giving flowers & roses', 'Gifting handmade cards & chocolates', 'Romantic dinners'],
     suggestedCarryItems: [
@@ -219,7 +219,7 @@ export const FESTIVALS_CATALOG: FestivalCatalogItem[] = [
     date: '2027-03-22',
     emoji: '🎨',
     category: 'cultural',
-    color: 'from-pink-500 via-purple-600 to-amber-400',
+    color: 'from-orange-500 via-indigo-600 to-amber-400',
     description: 'Celebration of spring, victory of goodness, joy, and washing away grudges in vibrant clouds of herbal color.',
     traditions: ['Playing with organic herbal Gulal colors', 'Sharing fresh Mawa Gujiyas', 'Refreshing chilled Thandai drink'],
     suggestedCarryItems: [

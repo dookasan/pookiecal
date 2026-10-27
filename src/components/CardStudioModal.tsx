@@ -35,7 +35,7 @@ const CARD_THEMES: Record<
   }
 > = {
   aurora: {
-    name: 'Clay Pink',
+    name: 'Vibrant Tangerine',
     cardClass: 'feature-card-pink',
     isDark: true,
     badge: 'bg-white/20 text-white'
@@ -214,7 +214,7 @@ export const CardStudioModal: React.FC<CardStudioModalProps> = ({
                               <span className="text-[11px] text-[#6a6a6a] font-mono">~</span>
                             )}
                           </div>
-                          <div className="w-2.5 h-8 rounded-t-sm bg-[#ff4d8b] border border-[#0a0a0a]/10" />
+                          <div className="w-2.5 h-8 rounded-t-sm bg-[#ff5722] border border-[#0a0a0a]/10" />
                         </button>
                       ))}
                     </div>

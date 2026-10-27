@@ -62,7 +62,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
             {monthNames[monthIndex]} {year}
           </h2>
           <div className="flex flex-wrap items-center gap-2 text-[13px] font-medium text-[#3a3a3a] mt-1">
-            <span className="px-3 py-1 rounded-full bg-[#ff4d8b] text-white">
+            <span className="px-3 py-1 rounded-full bg-[#ff5722] text-white">
               🎂 {monthBirthdays.length} birthday{monthBirthdays.length === 1 ? '' : 's'}
             </span>
             <span className="px-3 py-1 rounded-full bg-[#e8b94a] text-[#0a0a0a]">
@@ -195,7 +195,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                         key={person.id}
                         onClick={() => onOpenCardStudio(person)}
                         title={`Wish ${person.name}`}
-                        className="w-full text-left px-2 py-1 rounded-[8px] bg-[#ff4d8b] text-white flex items-center gap-1 truncate cursor-pointer"
+                        className="w-full text-left px-2 py-1 rounded-[8px] bg-[#ff5722] text-white flex items-center gap-1 truncate cursor-pointer"
                       >
                         <span className="text-xs">{person.avatarEmoji || '🎂'}</span>
                         <span className="text-[11px] font-semibold truncate">

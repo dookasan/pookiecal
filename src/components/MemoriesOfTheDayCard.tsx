@@ -123,7 +123,7 @@ export const MemoriesOfTheDayCard: React.FC<MemoriesOfTheDayCardProps> = ({
       {/* Top Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#E6E0D3]">
         <div>
-          <div className="flex items-center gap-2 text-[12px] font-semibold text-[#FF4D8B]">
+          <div className="flex items-center gap-2 text-[12px] font-semibold text-[#FF5722]">
             <span>Google Photos · Memories of the Day</span>
             <span aria-hidden="true">·</span>
             <span className="text-[#525E66] tabular-nums">
@@ -386,7 +386,7 @@ export const MemoriesOfTheDayCard: React.FC<MemoriesOfTheDayCardProps> = ({
                       title={`${mem.personName}: ${mem.caption}`}
                       className={`relative aspect-4/3 rounded-[12px] overflow-hidden border-2 transition-all cursor-pointer ${
                         isSelected
-                          ? 'border-[#FF4D8B] scale-[1.02]'
+                          ? 'border-[#FF5722] scale-[1.02]'
                           : 'border-transparent opacity-75 hover:opacity-100'
                       }`}
                     >
@@ -428,7 +428,7 @@ export const MemoriesOfTheDayCard: React.FC<MemoriesOfTheDayCardProps> = ({
               <button
                 type="button"
                 onClick={() => onOpenCardStudio(activeMemory.personRef)}
-                className="h-[42px] px-4 rounded-full bg-[#FF4D8B] hover:bg-[#e83c78] text-white text-[13px] font-semibold inline-flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                className="h-[42px] px-4 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[13px] font-semibold inline-flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Send Memory Wish</span>
