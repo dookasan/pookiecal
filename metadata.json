@@ -1,0 +1,6 @@
+{
+  "name": "PookieCal",
+  "description": "PookieCal — Interactive birthday, festival & visit planner for family and friends with reminders, custom greetings, social & WhatsApp sharing, party coordinator, and 1-tap direct calling.",
+  "requestFramePermissions": ["notifications"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
