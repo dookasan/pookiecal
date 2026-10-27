@@ -9,7 +9,7 @@ import {
   Trash2,
   RotateCcw
 } from 'lucide-react';
-import { BirthdayPerson, PartyPlan, CustomEvent, InviteRecord } from './types/birthday';
+import { BirthdayPerson, PartyPlan, CustomEvent, InviteRecord, GooglePhotoItem } from './types/birthday';
 import {
   INITIAL_BIRTHDAYS,
   INITIAL_PARTY_PLAN
@@ -27,7 +27,8 @@ import { PartyPlannerView } from './components/PartyPlannerView';
 import { CalendarView } from './components/CalendarView';
 import { AddBirthdayModal } from './components/AddBirthdayModal';
 import { NotificationBanner } from './components/NotificationBanner';
-import { GoogleMemberHubModal } from './components/GoogleMemberHubModal';
+import { GoogleMemberHubModal, HubTab } from './components/GoogleMemberHubModal';
+import { MemoriesOfTheDayCard } from './components/MemoriesOfTheDayCard';
 import { FestivalsAndEventsView } from './components/FestivalsAndEventsView';
 import { AddEventModal } from './components/AddEventModal';
 import { InviteModal } from './components/InviteModal';
@@ -312,6 +313,7 @@ export default function App() {
   const [selectedForCard, setSelectedForCard] = useState<BirthdayPerson | null>(null);
   const [selectedForCall, setSelectedForCall] = useState<BirthdayPerson | null>(null);
   const [selectedForGoogleHub, setSelectedForGoogleHub] = useState<BirthdayPerson | null>(null);
+  const [googleHubInitialTab, setGoogleHubInitialTab] = useState<HubTab>('all');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
@@ -351,8 +353,34 @@ export default function App() {
     setSelectedForCall(person);
   };
 
-  const handleOpenGoogleHub = (person: BirthdayPerson) => {
+  const handleOpenGoogleHub = (person: BirthdayPerson, tab: HubTab = 'all') => {
+    setGoogleHubInitialTab(tab);
     setSelectedForGoogleHub(person);
+  };
+
+  const handleAddPhotoMemory = (personId: string, newPhoto: GooglePhotoItem) => {
+    setBirthdays((prev) =>
+      prev.map((person) => {
+        if (person.id !== personId) return person;
+        const existingProfile = person.googleProfile || {
+          googleEmail: person.email || `${person.name.toLowerCase().replace(/\s+/g, '.')}@gmail.com`,
+          lastSynced: 'Just now',
+          recentEmails: [],
+          chatConversations: [],
+          sharedPhotos: [],
+          youtubeVideos: []
+        };
+        return {
+          ...person,
+          googleConnected: true,
+          googleProfile: {
+            ...existingProfile,
+            lastSynced: 'Just now',
+            sharedPhotos: [newPhoto, ...(existingProfile.sharedPhotos || [])]
+          }
+        };
+      })
+    );
   };
 
   return (
@@ -583,6 +611,14 @@ export default function App() {
               onViewEvents={() => setActiveTab('events')}
             />
 
+            {/* Dashboard Photo Card Highlight: Memories of the Day */}
+            <MemoriesOfTheDayCard
+              birthdays={birthdays}
+              onOpenGoogleHub={handleOpenGoogleHub}
+              onOpenCardStudio={handleOpenCardStudio}
+              onAddPhotoMemory={handleAddPhotoMemory}
+            />
+
             {/* Filter & Search Bar (`text-input` + `category-tab`) */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
@@ -768,6 +804,14 @@ export default function App() {
                 </div>
               </div>
             </div>
+
+            {/* Memories of the Day Highlight inside Google Hub Overview */}
+            <MemoriesOfTheDayCard
+              birthdays={birthdays}
+              onOpenGoogleHub={handleOpenGoogleHub}
+              onOpenCardStudio={handleOpenCardStudio}
+              onAddPhotoMemory={handleAddPhotoMemory}
+            />
 
             {/* 6-Color Saturated Feature Cards with Embedded Product Mockup Fragments */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1010,9 +1054,10 @@ export default function App() {
 
       {selectedForGoogleHub && (
         <GoogleMemberHubModal
-          key={selectedForGoogleHub.id}
+          key={`${selectedForGoogleHub.id}-${googleHubInitialTab}`}
           person={selectedForGoogleHub}
           allContacts={birthdays}
+          initialTab={googleHubInitialTab}
           onSelectPerson={(m) => setSelectedForGoogleHub(m)}
           onClose={() => setSelectedForGoogleHub(null)}
           onUpdatePerson={(updated) => {

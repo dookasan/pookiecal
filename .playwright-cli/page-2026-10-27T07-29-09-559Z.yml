@@ -1,0 +1,356 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "PookieCal" [ref=e7] [cursor=pointer]:
+        - /url: "#top"
+      - navigation "Primary Marketing Navigation" [ref=e8]:
+        - link "Countdown Tool" [ref=e9] [cursor=pointer]:
+          - /url: "#calculator"
+        - link "Card Studio" [ref=e10] [cursor=pointer]:
+          - /url: "#features"
+        - link "Festivals & Visits" [ref=e11] [cursor=pointer]:
+          - /url: "#festivals"
+        - link "Privacy & Sync" [ref=e12] [cursor=pointer]:
+          - /url: "#privacy-sync"
+        - button "Workspace (5)" [ref=e13] [cursor=pointer]
+      - button "Launch PookieCal" [ref=e15] [cursor=pointer]
+  - main [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - generic [ref=e21]:
+            - generic [ref=e22]:
+              - generic [ref=e23]: Birthdays
+              - generic [aria-hidden] [ref=e24]: ·
+              - generic [ref=e25]: Cultural Festivals
+              - generic [aria-hidden] [ref=e26]: ·
+              - generic [ref=e27]: Family Visits
+              - generic [aria-hidden] [ref=e28]: ·
+              - generic [ref=e29]: Group Gift Pools
+            - heading "Celebrate the people who matter most, right on time." [level=1] [ref=e30]
+            - paragraph [ref=e31]: PookieCal keeps your family birthdays, festival home visits, carry-sweets checklists, custom greeting cards, and shared gift pools organized in one warm, private workspace.
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - button "Launch PookieCal Free" [ref=e34] [cursor=pointer]
+              - button "Create Free Account" [ref=e38] [cursor=pointer]
+            - generic [ref=e39]:
+              - generic [ref=e40]: Free for personal & family circles
+              - generic [aria-hidden] [ref=e41]: ·
+              - generic [ref=e42]: Works on Web & Mobile
+              - generic [aria-hidden] [ref=e43]: ·
+              - button "Already registered? Sign in" [ref=e44] [cursor=pointer]
+        - generic [ref=e45]:
+          - generic [ref=e46]:
+            - generic [ref=e47]:
+              - generic [ref=e48]: Live Circle Notification Feed
+              - heading "Your Upcoming Celebration Stream" [level=2] [ref=e49]
+            - button "View Full Calendar →" [ref=e50] [cursor=pointer]
+          - generic [ref=e51]:
+            - generic [ref=e52]:
+              - generic [ref=e53]:
+                - generic [ref=e54]:
+                  - generic [ref=e55]: Reminder · 9:00 AM
+                  - generic [aria-hidden] [ref=e56]: ·
+                  - generic [ref=e57]: Family Circle
+                - paragraph [ref=e58]: Sarah Jenkins’s Birthday is coming up (Oct 22)
+                - paragraph [ref=e59]: "Likes: Artisan Coffee, Handwritten Notes · 1-day & same-day alerts active"
+              - generic [ref=e60]:
+                - button "Send Card" [ref=e61] [cursor=pointer]
+                - button "Call" [ref=e62] [cursor=pointer]
+            - generic [ref=e63]:
+              - generic [ref=e64]:
+                - generic [ref=e65]:
+                  - generic [ref=e66]: Diwali Family Visit
+                  - generic [aria-hidden] [ref=e67]: ·
+                  - generic [ref=e68]: 3 of 4 prep items ready
+                - paragraph [ref=e69]: "Carry: Assorted Kaju Katli Box & Marigold Toran for Parents"
+              - button "Open Checklist" [ref=e70] [cursor=pointer]
+            - generic [ref=e71]:
+              - generic [ref=e72]:
+                - generic [ref=e73]:
+                  - generic [ref=e74]: Surprise Party Gift Pool
+                  - generic [ref=e75]: $185 / $220 funded
+                - paragraph [ref=e78]: 4 friends chipped in for Espresso Machine · 6 RSVPs confirmed
+              - button "Chip In →" [ref=e79] [cursor=pointer]
+          - generic [ref=e80]:
+            - generic [ref=e81]: "Jump directly to any tool:"
+            - generic [ref=e82]:
+              - button "Birthday Wall" [ref=e83] [cursor=pointer]
+              - generic [aria-hidden] [ref=e84]: ·
+              - button "Festivals" [ref=e85] [cursor=pointer]
+              - generic [aria-hidden] [ref=e86]: ·
+              - button "Google Hub" [ref=e87] [cursor=pointer]
+              - generic [aria-hidden] [ref=e88]: ·
+              - button "Party Pool" [ref=e89] [cursor=pointer]
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - generic [ref=e92]: 4-Stage Alerts
+          - paragraph [ref=e93]: Automated reminders 7 days, 3 days, 1 day before, and at 9:00 AM on the day.
+        - generic [ref=e94]:
+          - generic [ref=e95]: 6 Card Themes
+          - paragraph [ref=e96]: Instant personalized PNG greeting cards with 1-tap WhatsApp & SMS sharing.
+        - generic [ref=e97]:
+          - generic [ref=e98]: 3-Part Prep Lists
+          - paragraph [ref=e99]: Organized To-Carry, To-Shop, and To-Do checklists for every family festival visit.
+        - generic [ref=e100]:
+          - generic [ref=e101]: 100% Private
+          - paragraph [ref=e102]: Isolated per-user workspaces with Email/Password or 1-click Google Sign-In.
+    - generic [ref=e105]:
+      - generic [ref=e106]:
+        - generic [ref=e107]: Interactive Live Preview Tool
+        - heading "Test the Birthday Countdown & Reminder Planner right now." [level=2] [ref=e108]
+        - paragraph [ref=e109]: Enter anyone’s name and birth date below to calculate their exact countdown days, milestone age, zodiac sign, and optimal gift prep schedule—then save them straight to your circle.
+        - generic [ref=e110]:
+          - generic [ref=e111]:
+            - generic [ref=e112]:
+              - generic [ref=e113]: Person’s Name
+              - textbox "Person’s Name" [ref=e114]:
+                - /placeholder: e.g., Mom, Aarav, Bestie
+                - text: Aarav Mehta
+            - generic [ref=e115]:
+              - generic [ref=e116]: Birth Date
+              - textbox "Birth Date" [ref=e117]: 1996-11-18
+          - generic [ref=e118]:
+            - generic [ref=e119]:
+              - generic [ref=e120]: Relationship Circle
+              - combobox "Relationship Circle" [ref=e121]:
+                - option "Family" [selected]
+                - option "Close Friend"
+                - option "Partner"
+                - option "Work / Colleague"
+            - generic [ref=e122]:
+              - generic [ref=e123]: WhatsApp / Phone (Optional)
+              - textbox "WhatsApp / Phone (Optional)" [ref=e124]:
+                - /placeholder: +1 (555) 234-5678
+                - text: +1 (555) 234-5678
+          - button "Save Aarav Mehta to My Circle" [ref=e126] [cursor=pointer]
+      - generic [ref=e131]:
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]: Live PookieCal Schedule Output · Nov 18
+            - heading "Aarav Mehta" [level=3] [ref=e135]
+            - generic [ref=e136]:
+              - generic [ref=e137]: family
+              - generic [aria-hidden] [ref=e138]: ·
+              - generic [ref=e139]: Turning 30
+              - generic [aria-hidden] [ref=e140]: ·
+              - generic [ref=e141]: "Zodiac: ♏ Scorpio"
+          - generic [ref=e142]:
+            - generic [ref=e143]: 22d
+            - generic [ref=e144]: days remaining
+        - generic [ref=e145]:
+          - generic [ref=e146]: "Automated PookieCal Reminder Timeline:"
+          - generic [ref=e147]:
+            - generic [ref=e148]:
+              - generic [ref=e149]: 1 Week Before
+              - generic [ref=e150]: Order Gift / Plan Pool
+            - generic [ref=e151]:
+              - generic [ref=e152]: 3 Days Before
+              - generic [ref=e153]: Confirm Visit & Cake
+            - generic [ref=e154]:
+              - generic [ref=e155]: 1 Day Before
+              - generic [ref=e156]: Design Greeting Card
+            - generic [ref=e157]:
+              - generic [ref=e158]: 9:00 AM Same Day
+              - generic [ref=e159]: 1-Tap Call & WhatsApp
+    - generic [ref=e160]:
+      - generic [ref=e161]:
+        - generic [ref=e162]:
+          - generic [ref=e163]:
+            - generic [ref=e164]: Interactive Card Theme Switcher
+            - generic [ref=e165]:
+              - button "Warm Coral" [ref=e166] [cursor=pointer]
+              - button "Soft Matcha" [ref=e167] [cursor=pointer]
+              - button "Golden Peach" [ref=e168] [cursor=pointer]
+              - button "Midnight Ink" [ref=e169] [cursor=pointer]
+          - generic [ref=e170]:
+            - generic [ref=e171]: HAPPY BIRTHDAY WISH · Oct 22
+            - heading "Wishing you the warmest year ahead, Sarah Jenkins!" [level=3] [ref=e172]
+            - paragraph [ref=e173]: May this year bring endless laughter, unforgettable family dinners, and every adventure on your wishlist.
+            - generic [ref=e174]:
+              - generic [ref=e175]: With love from your Circle
+              - generic [ref=e176]: PookieCal Studio
+          - generic [ref=e177]:
+            - button "Customize & Download PNG" [ref=e178] [cursor=pointer]
+            - button "1-Tap Direct Call / WhatsApp" [ref=e183] [cursor=pointer]
+        - generic [ref=e187]:
+          - generic [ref=e188]: 01. Custom Greeting Studio & 1-Tap Calling
+          - heading "Say more than a generic text message." [level=2] [ref=e189]
+          - paragraph [ref=e190]: When a birthday arrives, PookieCal lets you craft a keepsake greeting card in seconds with 6 curated visual themes, export a crisp PNG image, share pre-filled wishes straight to WhatsApp, or launch a 1-tap phone or FaceTime call.
+          - generic [ref=e191]:
+            - button "Open Greeting Card Studio" [ref=e192] [cursor=pointer]
+            - button "Browse All Birthdays" [ref=e196] [cursor=pointer]
+      - generic [ref=e197]:
+        - generic [ref=e198]:
+          - generic [ref=e199]: 02. Cultural Festivals & Family Visit Checklists
+          - heading "Never arrive empty-handed at a family festival visit." [level=2] [ref=e200]
+          - paragraph [ref=e201]:
+            - text: From Diwali, Eid, Holi, and Raksha Bandhan to Thanksgiving and Christmas, PookieCal includes a built-in festival catalog with dedicated
+            - strong [ref=e202]: To-Carry
+            - text: (mithai, dry fruits, flowers),
+            - strong [ref=e203]: To-Shop
+            - text: ", and"
+            - strong [ref=e204]: To-Do
+            - text: checklists—plus 1-click Google Shopping & Amazon gift search.
+          - button "Open Festivals & Visit Planner" [ref=e206] [cursor=pointer]
+        - generic [ref=e210]:
+          - generic [ref=e211]:
+            - generic [ref=e212]:
+              - generic [ref=e213]: Interactive Festival Checklist · Click any item to toggle
+              - heading "Diwali Home Visit — Sharma Family" [level=3] [ref=e214]
+            - generic [ref=e215]: 2/4 Done
+          - generic [ref=e216]:
+            - button "Assorted Kaju Katli & Dry Fruit Box To Carry" [ref=e217] [cursor=pointer]:
+              - generic [ref=e218]: Assorted Kaju Katli & Dry Fruit Box
+              - generic [ref=e223]: To Carry
+            - button "Handcrafted Brass Diya Set (2 pcs) To Shop" [ref=e224] [cursor=pointer]:
+              - generic [ref=e225]: Handcrafted Brass Diya Set (2 pcs)
+              - generic [ref=e228]: To Shop
+            - button "Confirm evening family dinner timing on WhatsApp To Do" [ref=e229] [cursor=pointer]:
+              - generic [ref=e230]: Confirm evening family dinner timing on WhatsApp
+              - generic [ref=e235]: To Do
+            - button "Warm saffron & cardamom tea blend for grandparents To Carry" [ref=e236] [cursor=pointer]:
+              - generic [ref=e237]: Warm saffron & cardamom tea blend for grandparents
+              - generic [ref=e240]: To Carry
+          - generic [ref=e241]:
+            - generic [ref=e242]: Includes 1-tap gift lookup on Google Shopping & Amazon
+            - button "Plan Your Own Visit →" [ref=e243] [cursor=pointer]
+    - generic [ref=e246]:
+      - generic [ref=e247]:
+        - generic [ref=e248]: 03. Private Circle Accounts & Google Workspace Hub
+        - heading "Your family memories stay private to your circle." [level=2] [ref=e249]
+        - paragraph [ref=e250]: Register in seconds with Email & Password or 1-click Google Sign-In. Every account receives an isolated personal calendar—and if you choose to open the Google Member Hub, you can view shared Google Photos memory reels, recent Gmail threads, and tailored gift ideas for each person in your circle.
+        - generic [ref=e251]:
+          - generic [ref=e252]:
+            - generic [ref=e253]: Isolated User Workspaces
+            - paragraph [ref=e258]: Start with a clean slate or explore sample templates. Your contacts and notes are never sold or shared.
+          - generic [ref=e259]:
+            - generic [ref=e260]: No Restricted-Scope Lockouts
+            - paragraph [ref=e265]: Standard sign-in uses only basic profile & email identity so anyone can join immediately.
+        - generic [ref=e266]:
+          - button "Explore Google Member Hub" [ref=e267] [cursor=pointer]
+          - button "Create Free Account" [ref=e271] [cursor=pointer]
+      - generic [ref=e273]:
+        - generic [ref=e274]:
+          - generic [ref=e275]:
+            - generic [ref=e276]: Connected Member Relationship Hub
+            - heading "Sarah Jenkins · Unified Memory Feed" [level=3] [ref=e277]
+          - button "Open Live Hub →" [ref=e278] [cursor=pointer]
+        - generic [ref=e279]:
+          - generic [ref=e280]:
+            - generic [ref=e281]: Gmail Threads
+            - paragraph [ref=e286]: 3 Recent Emails
+            - paragraph [ref=e287]: Compose & log birthday notes
+          - generic [ref=e288]:
+            - generic [ref=e289]: Shared Photos
+            - paragraph [ref=e295]: Memory Reel
+            - paragraph [ref=e296]: Auto-advancing photo slideshow
+          - generic [ref=e297]:
+            - generic [ref=e298]: Smart Gifts
+            - paragraph [ref=e304]: Curated Ideas
+            - paragraph [ref=e305]: 1-click add to Party Gift Pool
+        - generic [ref=e306]:
+          - generic [ref=e307]: Compliant with Google API Services User Data Policy.
+          - generic [ref=e308]:
+            - link "Privacy Policy" [ref=e309] [cursor=pointer]:
+              - /url: /privacy
+            - generic [aria-hidden] [ref=e310]: ·
+            - link "Terms of Service" [ref=e311] [cursor=pointer]:
+              - /url: /terms
+    - generic [ref=e313]:
+      - generic [ref=e314]:
+        - generic [ref=e315]:
+          - generic [ref=e316]:
+            - generic [ref=e317]: Collaborative Surprise Party & Gift Pool
+            - heading "Maya’s Rooftop Birthday Pool" [level=3] [ref=e318]
+          - generic [ref=e319]: $310 / $350 Goal
+        - generic [ref=e320]:
+          - generic [ref=e321]:
+            - generic [ref=e322]:
+              - generic [ref=e323]: Breville Barista Espresso Machine
+              - generic [ref=e324]: $185 / $220
+            - generic [ref=e327]: "Contributors: Rohan ($60) · Ananya ($50) · Vikram ($75)"
+          - generic [ref=e328]:
+            - generic [ref=e329]:
+              - generic [ref=e330]: Custom Tiered Pistachio & Rose Cake
+              - generic [ref=e331]: $125 / $130
+            - generic [ref=e334]: "Assigned Role: Priya Sharma (Brings Cake & Candles)"
+        - generic [ref=e335]:
+          - button "Open Party Pool Planner →" [ref=e336] [cursor=pointer]
+          - button "Share WhatsApp Invite Link" [ref=e337] [cursor=pointer]
+      - generic [ref=e338]:
+        - generic [ref=e339]: 04. Group Gift Pools & WhatsApp Circle Invites
+        - heading "Plan surprise parties and split group gifts without awkward spreadsheets." [level=2] [ref=e340]
+        - paragraph [ref=e341]: Assign party roles, track guest RSVPs, and let friends chip into shared wishlist gifts with transparent contribution bars. Need missing family birthdays? Send a 1-tap WhatsApp or QR invite link so relatives can add their dates directly to your circle.
+        - generic [ref=e342]:
+          - button "Coordinate a Party Pool" [ref=e343] [cursor=pointer]
+          - button "Invite Family Circle" [ref=e347] [cursor=pointer]
+    - generic [ref=e349]:
+      - generic [ref=e350]:
+        - generic [ref=e351]: Real Families & Friend Circles
+        - heading "How circles use PookieCal every week." [level=2] [ref=e352]
+      - generic [ref=e353]:
+        - generic [ref=e354]:
+          - paragraph [ref=e355]: “Before PookieCal, our extended family had birthdays scattered across three WhatsApp groups. Now 28 cousins and aunts are in one calendar, and we haven’t missed a single milestone call in 8 months.”
+          - generic [ref=e356]:
+            - strong [ref=e357]: Neha Kulkarni
+            - text: Family Circle Organizer · Mumbai & Seattle (28 members tracked)
+        - generic [ref=e358]:
+          - paragraph [ref=e359]: “The Diwali and Raksha Bandhan To-Carry checklists saved us during our last home visit. Having sweet boxes, gift hampers, and visit times checked off in one place made the whole weekend effortless.”
+          - generic [ref=e360]:
+            - strong [ref=e361]: Rohan & Kriti Verma
+            - text: Household Planners · Bengaluru (14 festival visits planned)
+        - generic [ref=e362]:
+          - paragraph [ref=e363]: “We used the Party Pool to fund a $250 espresso machine for our teammate’s 30th birthday in two afternoons—plus everyone signed and downloaded a custom greeting card from the Studio.”
+          - generic [ref=e364]:
+            - strong [ref=e365]: Daniel Cho
+            - text: Product Design Lead · San Francisco (9 colleagues in pool)
+    - generic [ref=e367]:
+      - generic [ref=e368]:
+        - heading "Ready to build your birthday & festival circle?" [level=2] [ref=e369]
+        - paragraph [ref=e370]: Launch the interactive workspace immediately or create your free personal account in under 15 seconds.
+      - generic [ref=e371]:
+        - button "Launch PookieCal App" [ref=e372] [cursor=pointer]
+        - button "Create Free Account" [ref=e376] [cursor=pointer]
+  - contentinfo [ref=e377]:
+    - generic [ref=e378]:
+      - generic [ref=e379]:
+        - generic [ref=e380]: PookieCal
+        - paragraph [ref=e381]: Interactive birthday, cultural festival, family visit & group gift pool planner for your closest circle.
+      - generic [ref=e382]:
+        - paragraph [ref=e383]: Application Tools
+        - list [ref=e384]:
+          - listitem [ref=e385]:
+            - button "Birthday Wall & Reminders" [ref=e386] [cursor=pointer]
+          - listitem [ref=e387]:
+            - button "Festivals & Family Visits" [ref=e388] [cursor=pointer]
+          - listitem [ref=e389]:
+            - button "Year-Round Calendar" [ref=e390] [cursor=pointer]
+      - generic [ref=e391]:
+        - paragraph [ref=e392]: Circle Collaboration
+        - list [ref=e393]:
+          - listitem [ref=e394]:
+            - button "Party & Gift Pool" [ref=e395] [cursor=pointer]
+          - listitem [ref=e396]:
+            - button "Google Workspace Hub" [ref=e397] [cursor=pointer]
+          - listitem [ref=e398]:
+            - button "WhatsApp Circle Invites" [ref=e399] [cursor=pointer]
+      - generic [ref=e400]:
+        - paragraph [ref=e401]: Account & Legal
+        - list [ref=e402]:
+          - listitem [ref=e403]:
+            - button "Create Account / Sign In" [ref=e404] [cursor=pointer]
+          - listitem [ref=e405]:
+            - link "Privacy Policy" [ref=e406] [cursor=pointer]:
+              - /url: /privacy
+          - listitem [ref=e407]:
+            - link "Terms of Service" [ref=e408] [cursor=pointer]:
+              - /url: /terms
+    - generic [ref=e409]:
+      - generic [ref=e410]: © 2026 PookieCal (www.pookiecal.com). All rights reserved.
+      - generic [ref=e411]:
+        - link "Privacy Policy" [ref=e412] [cursor=pointer]:
+          - /url: /privacy
+        - generic [aria-hidden] [ref=e413]: ·
+        - link "Terms of Service" [ref=e414] [cursor=pointer]:
+          - /url: /terms

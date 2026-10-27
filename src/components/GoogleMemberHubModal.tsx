@@ -41,6 +41,12 @@ import {
 } from '../utils/birthdayUtils';
 import { fetchLiveGmailMessages } from '../utils/gmailApi';
 import { AppUser } from '../utils/googleAuth';
+import {
+  getMemberMemoriesOfTheDay,
+  buildFallbackMemorySvgDataUrl
+} from '../utils/memoriesUtils';
+
+export type HubTab = 'all' | 'gmail' | 'chat' | 'photos' | 'youtube' | 'suggestions';
 
 interface GoogleMemberHubModalProps {
   person: BirthdayPerson;
@@ -53,9 +59,8 @@ interface GoogleMemberHubModalProps {
   googleAccessToken?: string | null;
   googleUser?: AppUser | null;
   onConnectGoogleAccount?: () => void;
+  initialTab?: HubTab;
 }
-
-type HubTab = 'all' | 'gmail' | 'chat' | 'photos' | 'youtube' | 'suggestions';
 
 const STAT_CARD_VARIANTS = [
   'feature-card-pink',
@@ -74,9 +79,12 @@ export const GoogleMemberHubModal: React.FC<GoogleMemberHubModalProps> = ({
   onAddGiftToPartyPool,
   googleAccessToken,
   googleUser,
-  onConnectGoogleAccount
+  onConnectGoogleAccount,
+  initialTab = 'all'
 }) => {
-  const [activeTab, setActiveTab] = useState<HubTab>('all');
+  const [activeTab, setActiveTab] = useState<HubTab>(initialTab);
+  const [memoryDayIdx, setMemoryDayIdx] = useState(0);
+  const [pinnedFeedback, setPinnedFeedback] = useState(false);
 
   // Search filter across emails & chats
   const [searchQuery, setSearchQuery] = useState('');
@@ -138,6 +146,24 @@ export const GoogleMemberHubModal: React.FC<GoogleMemberHubModalProps> = ({
   )}&add=${encodeURIComponent(emailAddress)}`;
 
   const photosList = profile?.sharedPhotos || [];
+  const memberMemories = getMemberMemoriesOfTheDay(person);
+  const activeMemoryOfDay = memberMemories[memoryDayIdx % memberMemories.length];
+
+  const handlePinMemoryAsHighlight = (photoIndex: number) => {
+    if (!profile || !photosList[photoIndex]) return;
+    const chosen = photosList[photoIndex];
+    const reordered = [chosen, ...photosList.filter((_, idx) => idx !== photoIndex)];
+    onUpdatePerson({
+      ...person,
+      googleProfile: {
+        ...profile,
+        sharedPhotos: reordered
+      }
+    });
+    setMemoryDayIdx(0);
+    setPinnedFeedback(true);
+    setTimeout(() => setPinnedFeedback(false), 1400);
+  };
 
   // Auto-sync real Gmail threads when connected with Google Account
   const handleSyncRealGmail = async () => {
@@ -774,12 +800,28 @@ export const GoogleMemberHubModal: React.FC<GoogleMemberHubModalProps> = ({
                       }}
                       className="bg-[#fffaf0] border border-[#e5e5e5] rounded-[16px] overflow-hidden cursor-pointer group"
                     >
-                      <div className="aspect-16/10 bg-[#f5f0e0] overflow-hidden">
+                      <div className="aspect-16/10 bg-[#f5f0e0] overflow-hidden relative">
                         <img
                           src={photo.url}
                           alt={photo.caption}
+                          referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            const target = e.currentTarget;
+                            target.onerror = null;
+                            target.src = buildFallbackMemorySvgDataUrl(
+                              person.name,
+                              photo.caption,
+                              photo.album,
+                              index
+                            );
+                          }}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
+                        {index === 0 && (
+                          <span className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-[#0a0a0a]/80 text-white text-[10px] font-semibold">
+                            Memory of the Day
+                          </span>
+                        )}
                       </div>
                       <div className="p-3">
                         <p className="font-semibold text-[13px] text-[#0a0a0a] truncate">
@@ -1129,6 +1171,127 @@ export const GoogleMemberHubModal: React.FC<GoogleMemberHubModalProps> = ({
                 </form>
               )}
 
+              {/* MEMORIES OF THE DAY SPOTLIGHT BANNER IN GOOGLE PHOTOS TAB */}
+              {activeMemoryOfDay && (
+                <div className="rounded-[24px] bg-[#111B21] text-[#FCFBF7] border border-[#24323B] overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+                  <div className="lg:col-span-7 relative min-h-[260px] sm:min-h-[300px] bg-[#1A2730]">
+                    <img
+                      src={activeMemoryOfDay.photoUrl}
+                      alt={activeMemoryOfDay.caption}
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        target.onerror = null;
+                        target.src = buildFallbackMemorySvgDataUrl(
+                          person.name,
+                          activeMemoryOfDay.caption,
+                          activeMemoryOfDay.album,
+                          memoryDayIdx
+                        );
+                      }}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/15" />
+                    <div className="relative z-10 p-5 sm:p-6 h-full flex flex-col justify-between">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="px-3.5 py-1.5 rounded-full bg-[#FF4D8B] text-white text-[12px] font-semibold">
+                          {activeMemoryOfDay.timeAgoBadge}
+                        </span>
+                        <span className="px-3 py-1 rounded-full bg-black/55 text-white/90 text-[12px] font-medium tabular-nums">
+                          {activeMemoryOfDay.date}
+                        </span>
+                      </div>
+                      <div className="space-y-1 text-white pt-16">
+                        <div className="text-[12px] text-[#A4D4C5] font-medium">
+                          {activeMemoryOfDay.album} · Memory {(memoryDayIdx % memberMemories.length) + 1} of {memberMemories.length}
+                        </div>
+                        <h4 className="text-[22px] sm:text-[26px] font-bold leading-tight">
+                          “{activeMemoryOfDay.caption}”
+                        </h4>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="lg:col-span-5 p-6 flex flex-col justify-between gap-5 bg-[#111B21]">
+                    <div className="space-y-3">
+                      <div className="text-[12px] font-semibold text-[#A4D4C5]">
+                        Google Photos · Memory of the Day
+                      </div>
+                      <h4 className="text-[20px] font-bold text-white leading-snug">
+                        Relive this moment with {person.name}
+                      </h4>
+                      <p className="text-[13px] text-[#B8C4CC] leading-relaxed">
+                        Curated from shared Google Photos albums with {person.name}. Pin your favorite memory so it features on your main Dashboard highlight card.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setMemoryDayIdx(
+                                (prev) => (prev - 1 + memberMemories.length) % memberMemories.length
+                              )
+                            }
+                            aria-label="Previous member memory"
+                            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer"
+                          >
+                            <ChevronLeft className="w-4 h-4" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setMemoryDayIdx((prev) => (prev + 1) % memberMemories.length)
+                            }
+                            aria-label="Next member memory"
+                            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer"
+                          >
+                            <ChevronRight className="w-4 h-4" />
+                          </button>
+                        </div>
+
+                        {photosList.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handlePinMemoryAsHighlight(memoryDayIdx % photosList.length)
+                            }
+                            className="h-[38px] px-4 rounded-full bg-[#A4D4C5] text-[#111B21] text-[12px] font-semibold inline-flex items-center gap-1.5 cursor-pointer"
+                          >
+                            {pinnedFeedback ? (
+                              <>
+                                <Check className="w-3.5 h-3.5" />
+                                <span>Pinned to Dashboard!</span>
+                              </>
+                            ) : (
+                              <>
+                                <Sparkles className="w-3.5 h-3.5" />
+                                <span>Pin as Today’s Highlight</span>
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </div>
+
+                      <a
+                        href={getWhatsAppShareUrl(
+                          person.phone || '',
+                          `Hey ${person.name}! Our PookieCal Memory of the Day popped up today: "${activeMemoryOfDay.caption}" (${activeMemoryOfDay.date}). Such a great memory!`
+                        )}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full h-[40px] px-4 rounded-full bg-white/10 hover:bg-white/20 text-white text-[13px] font-semibold inline-flex items-center justify-center gap-1.5 transition-colors"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span>Share Memory with {person.name.split(' ')[0]} on WhatsApp</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                 {photosList.map((photo, idx) => (
                   <div
@@ -1143,8 +1306,24 @@ export const GoogleMemberHubModal: React.FC<GoogleMemberHubModalProps> = ({
                       <img
                         src={photo.url}
                         alt={photo.caption}
+                        referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          target.onerror = null;
+                          target.src = buildFallbackMemorySvgDataUrl(
+                            person.name,
+                            photo.caption,
+                            photo.album,
+                            idx
+                          );
+                        }}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
+                      {idx === 0 && (
+                        <div className="absolute top-3 left-3 px-2.5 py-1 bg-[#FF4D8B] text-white text-[11px] font-semibold rounded-full">
+                          Today’s Highlight
+                        </div>
+                      )}
                       <div className="absolute top-3 right-3 p-2 bg-[#0a0a0a]/80 text-white rounded-[10px] opacity-0 group-hover:opacity-100 transition-opacity">
                         <Maximize2 className="w-3.5 h-3.5" />
                       </div>

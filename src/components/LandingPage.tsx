@@ -13,7 +13,10 @@ import {
   Image as ImageIcon,
   ShoppingBag,
   Clock,
-  Lock
+  Lock,
+  ChevronLeft,
+  ChevronRight,
+  Camera
 } from 'lucide-react';
 import { BirthdayPerson, Relationship } from '../types/birthday';
 import {
@@ -22,6 +25,10 @@ import {
   getZodiacSign,
   formatBirthDateShort
 } from '../utils/birthdayUtils';
+import {
+  getCircleMemoriesOfTheDay,
+  buildFallbackMemorySvgDataUrl
+} from '../utils/memoriesUtils';
 import { AppUser } from '../utils/googleAuth';
 
 export type WorkspaceTab = 'wall' | 'events' | 'googleHub' | 'party' | 'calendar';
@@ -36,7 +43,10 @@ interface LandingPageProps {
   onOpenInviteModal: () => void;
   onOpenCardStudio: (person: BirthdayPerson) => void;
   onOpenCallModal: (person: BirthdayPerson) => void;
-  onOpenGoogleHub: (person: BirthdayPerson) => void;
+  onOpenGoogleHub: (
+    person: BirthdayPerson,
+    initialTab?: 'all' | 'gmail' | 'chat' | 'photos' | 'youtube' | 'suggestions'
+  ) => void;
   onQuickAddBirthday: (person: BirthdayPerson) => void;
 }
 
@@ -96,6 +106,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
   // Interactive Card Studio Theme Preview State
   const [activeThemeIdx, setActiveThemeIdx] = useState(0);
+
+  // Interactive Memories of the Day Carousel State
+  const circleMemories = getCircleMemoriesOfTheDay(birthdays);
+  const [activeMemoryIdx, setActiveMemoryIdx] = useState(0);
+  const activeLandingMemory =
+    circleMemories.length > 0 ? circleMemories[activeMemoryIdx % circleMemories.length] : null;
 
   // Interactive Festival Checklist Demo State
   const [demoPrepItems, setDemoPrepItems] = useState([
@@ -203,10 +219,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               Festivals & Visits
             </a>
             <a
-              href="#privacy-sync"
+              href="#memories"
               className="hover:text-[#111B21] hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
             >
-              Privacy & Sync
+              Memories of the Day
             </a>
             <button
               type="button"
@@ -851,6 +867,154 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
             </div>
           </div>
+
+          {/* SPLIT 03: MEMORIES OF THE DAY & GOOGLE PHOTOS DASHBOARD HIGHLIGHTS */}
+          {activeLandingMemory && (
+            <div id="memories" className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center pt-4">
+              {/* Left 6 Cols: Interactive Memories of the Day Photo Card Preview */}
+              <div className="lg:col-span-6 rounded-[32px] bg-[#F4EFE6] border border-[#E6E0D3] p-6 sm:p-8 space-y-5">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <div className="text-[12px] font-semibold text-[#FF4D8B] uppercase tracking-wider">
+                      Memories of the Day · Google Photos Sync
+                    </div>
+                    <h3 className="text-[20px] font-bold text-[#111B21] mt-0.5">
+                      Today’s Circle Photo Highlight
+                    </h3>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setActiveMemoryIdx(
+                          (prev) => (prev - 1 + circleMemories.length) % circleMemories.length
+                        )
+                      }
+                      aria-label="Previous memory"
+                      className="w-9 h-9 rounded-full bg-[#FCFBF7] border border-[#D6CFC0] flex items-center justify-center text-[#111B21] hover:bg-white cursor-pointer"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <span className="text-[12px] font-mono font-semibold text-[#525E66] px-1.5 tabular-nums">
+                      {(activeMemoryIdx % circleMemories.length) + 1}/{circleMemories.length}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setActiveMemoryIdx((prev) => (prev + 1) % circleMemories.length)
+                      }
+                      aria-label="Next memory"
+                      className="w-9 h-9 rounded-full bg-[#FCFBF7] border border-[#D6CFC0] flex items-center justify-center text-[#111B21] hover:bg-white cursor-pointer"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Featured Photo Card with Editorial Scrim */}
+                <div className="relative rounded-[24px] overflow-hidden bg-[#111B21] aspect-[16/10] border border-[#D6CFC0]">
+                  <img
+                    src={activeLandingMemory.photo.url}
+                    alt={activeLandingMemory.photo.caption}
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      target.onerror = null;
+                      target.src = buildFallbackMemorySvgDataUrl(
+                        activeLandingMemory.person.name,
+                        activeLandingMemory.photo.caption
+                      );
+                    }}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#111B21]/90 via-[#111B21]/25 to-transparent" />
+
+                  <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2">
+                    <span className="px-3 py-1 rounded-full bg-[#111B21]/80 text-[#FCFBF7] text-[11px] font-semibold">
+                      {activeLandingMemory.timeAgoBadge} · {activeLandingMemory.photo.albumName}
+                    </span>
+                    <span className="px-3 py-1 rounded-full bg-[#FF4D8B] text-white text-[11px] font-semibold">
+                      {activeLandingMemory.daysUntilBirthday === 0
+                        ? 'Birthday Today!'
+                        : `Birthday in ${activeLandingMemory.daysUntilBirthday}d`}
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-4 left-4 right-4 text-white space-y-1">
+                    <div className="text-[12px] text-[#A4D4C5] font-medium">
+                      {activeLandingMemory.person.name} ({activeLandingMemory.person.relationship}) · {activeLandingMemory.photo.dateTaken}
+                    </div>
+                    <p className="text-[18px] sm:text-[20px] font-bold leading-snug">
+                      “{activeLandingMemory.photo.caption}”
+                    </p>
+                  </div>
+                </div>
+
+                {/* Thumbnail Strip + Direct Actions */}
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+                  <div className="flex items-center gap-2">
+                    {circleMemories.slice(0, 4).map((mem, idx) => (
+                      <button
+                        key={mem.id}
+                        type="button"
+                        onClick={() => setActiveMemoryIdx(idx)}
+                        className={`px-3 py-1.5 rounded-full text-[12px] font-semibold transition-colors cursor-pointer ${
+                          idx === activeMemoryIdx % circleMemories.length
+                            ? 'bg-[#111B21] text-white'
+                            : 'bg-[#FCFBF7] border border-[#D6CFC0] text-[#374248] hover:text-[#111B21]'
+                        }`}
+                      >
+                        {mem.person.name.split(' ')[0]}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => onOpenGoogleHub(activeLandingMemory.person, 'photos')}
+                      className="h-[38px] px-4 rounded-full bg-[#FF4D8B] text-white text-[12px] font-semibold inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
+                    >
+                      <Camera className="w-3.5 h-3.5" />
+                      <span>Open in Google Hub Photos</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right 6 Cols: Editorial Copy for Memories of the Day */}
+              <div className="lg:col-span-6 space-y-5">
+                <div className="text-[14px] font-semibold text-[#FF4D8B]">
+                  03. Memories of the Day &amp; Photo Card Highlights
+                </div>
+                <h2
+                  className="text-[32px] sm:text-[42px] font-bold text-[#111B21] tracking-tight leading-[1.1]"
+                  style={{ textWrap: 'balance' }}
+                >
+                  Relive your circle’s best moments right on your Dashboard.
+                </h2>
+                <p className="text-[16px] text-[#374248] leading-[1.65] max-w-[58ch]">
+                  Every day, PookieCal curates <strong>Memories of the Day</strong> from your circle’s shared Google Photos albums—surfacing throwback birthdays, family festivals, and trips right on your main Dashboard and inside each member’s Google Hub Photos tab. Pin your favorite photo as Today’s Highlight or share a memory wish on WhatsApp in one tap.
+                </p>
+                <div className="pt-2 flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => onLaunchApp('wall')}
+                    className="h-[46px] px-6 rounded-full bg-[#111B21] hover:bg-[#24323B] text-white text-[14px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                  >
+                    <span>View Dashboard Photo Highlight</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onOpenGoogleHub(activeLandingMemory.person, 'photos')}
+                    className="h-[46px] px-6 rounded-full bg-[#F4EFE6] hover:bg-[#EAE3D5] text-[#111B21] text-[14px] font-semibold transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                  >
+                    Open Google Hub Photos
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </section>
 
         {/* SECTION 4: FULL-WIDTH DEEP CHARCOAL CONTRAST SECTION (WHATSAPP "SPEAK FREELY / PRIVACY" STYLE) */}
@@ -944,14 +1108,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       <p className="text-[12px] text-[#9AA6B0]">Compose &amp; log birthday notes</p>
                     </div>
 
-                    <div className="p-4 rounded-[16px] bg-[#111B21] border border-white/10 space-y-1">
+                    <button
+                      type="button"
+                      onClick={() => onOpenGoogleHub(featuredPerson, 'photos')}
+                      className="p-4 rounded-[16px] bg-[#111B21] border border-white/10 hover:border-[#FFB084] text-left space-y-1 transition-colors cursor-pointer"
+                    >
                       <div className="text-[#FFB084] font-semibold flex items-center gap-1.5">
                         <ImageIcon className="w-3.5 h-3.5" />
-                        <span>Shared Photos</span>
+                        <span>Memories of Day</span>
                       </div>
-                      <p className="text-white font-semibold tabular-nums">Memory Reel</p>
-                      <p className="text-[12px] text-[#9AA6B0]">Auto-advancing photo slideshow</p>
-                    </div>
+                      <p className="text-white font-semibold tabular-nums">Photo Highlights</p>
+                      <p className="text-[12px] text-[#9AA6B0]">Pin &amp; relive Google Photos</p>
+                    </button>
 
                     <div className="p-4 rounded-[16px] bg-[#111B21] border border-white/10 space-y-1">
                       <div className="text-[#FF4D8B] font-semibold flex items-center gap-1.5">
