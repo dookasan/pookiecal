@@ -30,6 +30,7 @@ import {
   buildFallbackMemorySvgDataUrl
 } from '../utils/memoriesUtils';
 import { AppUser } from '../utils/googleAuth';
+import { ClayLogoMark } from './ClayIllustrations';
 
 export type WorkspaceTab = 'wall' | 'events' | 'googleHub' | 'party' | 'calendar';
 
@@ -187,12 +188,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* STRICT 3-ZONE TOP BAR CONTRACT */}
       <header className="sticky top-0 z-40 h-16 bg-[#FCFBF7]/95 backdrop-blur-xs border-b border-[#E6E0D3]">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 h-full flex items-center justify-between gap-8">
-          {/* Zone 1: Single text element wordmark */}
+          {/* Zone 1: Brand Logo + Wordmark */}
           <a
             href="#top"
-            className="text-[21px] font-bold tracking-tight text-[#111B21] whitespace-nowrap shrink-0"
+            className="flex items-center gap-2.5 text-[21px] font-bold tracking-tight text-[#111B21] whitespace-nowrap shrink-0"
           >
-            PookieCal
+            <ClayLogoMark />
+            <span>PookieCal</span>
           </a>
 
           {/* Zone 2: 5 concise single-line text navigation links */}
@@ -1340,8 +1342,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <footer className="mt-12 bg-[#F4EFE6] border-t border-[#E6E0D3] text-[#374248] py-12">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-8 grid grid-cols-2 sm:grid-cols-4 gap-8 pb-10 text-[14px]">
           <div className="col-span-2 sm:col-span-1 space-y-2.5">
-            <div className="text-[19px] font-bold text-[#111B21] tracking-tight">
-              PookieCal
+            <div className="flex items-center gap-2.5 text-[19px] font-bold text-[#111B21] tracking-tight">
+              <ClayLogoMark />
+              <span>PookieCal</span>
             </div>
             <p className="text-[13px] text-[#525E66] leading-relaxed">
               Interactive birthday, cultural festival, family visit &amp; group gift pool planner for your closest circle.
