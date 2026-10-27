@@ -32,6 +32,7 @@ import { FestivalsAndEventsView } from './components/FestivalsAndEventsView';
 import { AddEventModal } from './components/AddEventModal';
 import { InviteModal } from './components/InviteModal';
 import { AuthModal } from './components/AuthModal';
+import { LandingPage, WorkspaceTab } from './components/LandingPage';
 import { ClayLogoMark, ClayHeroScene, ClayFooterMountains } from './components/ClayIllustrations';
 import { initAuth, googleSignOut, AppUser, getActiveLocalSession } from './utils/googleAuth';
 
@@ -276,10 +277,36 @@ export default function App() {
     }
   }, []);
 
+  // View Mode ('landing' marketing homepage vs 'workspace' functional app)
+  const [viewMode, setViewMode] = useState<'landing' | 'workspace'>(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (
+        params.get('autostart') === '1' ||
+        params.get('view') === 'app' ||
+        params.get('invite') ||
+        params.get('by')
+      ) {
+        return 'workspace';
+      }
+    } catch {
+      // ignore
+    }
+    return 'landing';
+  });
+
   // UI state
-  const [activeTab, setActiveTab] = useState<'wall' | 'events' | 'googleHub' | 'party' | 'calendar'>('wall');
+  const [activeTab, setActiveTab] = useState<WorkspaceTab>('wall');
   const [relationshipFilter, setRelationshipFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
+
+  const handleLaunchWorkspace = (tab?: WorkspaceTab) => {
+    if (tab) {
+      setActiveTab(tab);
+    }
+    setViewMode('workspace');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Modals state
   const [selectedForCard, setSelectedForCard] = useState<BirthdayPerson | null>(null);
@@ -329,50 +356,72 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fffaf0] text-[#0a0a0a] flex flex-col antialiased selection:bg-[#0a0a0a] selection:text-[#ffffff]">
-      {/* Clay Top Navigation (`top-nav` — 64px tall, #fffaf0 background) */}
-      <header className="sticky top-0 z-40 h-16 bg-[#fffaf0]/95 backdrop-blur-xs border-b border-[#e5e5e5]">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-8 h-full flex items-center justify-between gap-6">
-          {/* Left: Clay Logo + PookieCal Wordmark */}
-          <button
-            onClick={() => setActiveTab('wall')}
-            className="flex items-center gap-2.5 text-[#0a0a0a] cursor-pointer shrink-0"
-          >
-            <ClayLogoMark />
-            <span className="text-[20px] font-medium tracking-[-0.5px]">PookieCal</span>
-          </button>
-
-          {/* Center: Horizontal Navigation Menu (`{typography.nav-link}` Inter 14px / 500) */}
-          <nav aria-label="Main Navigation" className="flex items-center gap-1 sm:gap-2 overflow-x-auto">
-            {[
-              { id: 'wall', label: 'Birthdays' },
-              { id: 'events', label: 'Festivals & Visits' },
-              { id: 'googleHub', label: 'Google Hub' },
-              { id: 'party', label: 'Party Pool' },
-              { id: 'calendar', label: 'Calendar' }
-            ].map((tab) => (
+    <div className="min-h-screen bg-[#FCFBF7] text-[#111B21] flex flex-col antialiased selection:bg-[#111B21] selection:text-[#FCFBF7]">
+      {viewMode === 'landing' ? (
+        <LandingPage
+          birthdays={birthdays}
+          googleUser={googleUser}
+          onLaunchApp={handleLaunchWorkspace}
+          onOpenAuthModal={handleOpenAuthModal}
+          onOpenAddBirthday={() => setIsAddModalOpen(true)}
+          onOpenAddEvent={() => setIsAddEventModalOpen(true)}
+          onOpenInviteModal={() => setIsInviteModalOpen(true)}
+          onOpenCardStudio={handleOpenCardStudio}
+          onOpenCallModal={handleOpenCallModal}
+          onOpenGoogleHub={handleOpenGoogleHub}
+          onQuickAddBirthday={handleAddPerson}
+        />
+      ) : (
+        <>
+          {/* Clay Top Navigation (`top-nav` — 64px tall) */}
+          <header className="sticky top-0 z-40 h-16 bg-[#FCFBF7]/95 backdrop-blur-xs border-b border-[#e5e5e5]">
+            <div className="max-w-[1280px] mx-auto px-4 sm:px-8 h-full flex items-center justify-between gap-6">
+              {/* Left: Clay Logo + PookieCal Wordmark (returns to Homepage) */}
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                className={`px-4 py-2 rounded-full text-[14px] font-medium whitespace-nowrap shrink-0 cursor-pointer ${
-                  activeTab === tab.id
-                    ? 'bg-[#f5f0e0] text-[#0a0a0a]'
-                    : 'text-[#6a6a6a]'
-                }`}
+                onClick={() => setViewMode('landing')}
+                title="Back to PookieCal Homepage"
+                className="flex items-center gap-2.5 text-[#0a0a0a] cursor-pointer shrink-0"
               >
-                {tab.label}
+                <ClayLogoMark />
+                <span className="text-[20px] font-bold tracking-tight">PookieCal</span>
               </button>
-            ))}
-          </nav>
 
-          {/* Right: "Sign in / Register" + "+ Add Birthday" (`button-primary`) */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            {googleUser ? (
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f5f0e0] text-[13px] font-medium text-[#0a0a0a]">
-                <span className="w-2 h-2 rounded-full bg-[#2e9e6b]"></span>
-                <span className="truncate max-w-[110px] font-semibold">
-                  {googleUser.displayName || googleUser.email || 'Member'}
-                </span>
+              {/* Center: Horizontal Navigation Menu */}
+              <nav aria-label="Main Navigation" className="flex items-center gap-1 sm:gap-2 overflow-x-auto">
+                <button
+                  onClick={() => setViewMode('landing')}
+                  className="px-3.5 py-2 rounded-full text-[14px] font-medium text-[#6a6a6a] hover:text-[#0a0a0a] whitespace-nowrap shrink-0 cursor-pointer"
+                >
+                  Home
+                </button>
+                {[
+                  { id: 'wall', label: 'Birthdays' },
+                  { id: 'events', label: 'Festivals & Visits' },
+                  { id: 'googleHub', label: 'Google Hub' },
+                  { id: 'party', label: 'Party Pool' },
+                  { id: 'calendar', label: 'Calendar' }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                    className={`px-4 py-2 rounded-full text-[14px] font-medium whitespace-nowrap shrink-0 cursor-pointer ${
+                      activeTab === tab.id
+                        ? 'bg-[#f5f0e0] text-[#0a0a0a]'
+                        : 'text-[#6a6a6a]'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </nav>
+
+              {/* Right: "Sign in / Register" + "+ Add Birthday" (`button-primary`) */}
+              <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                {googleUser ? (
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f5f0e0] text-[13px] font-medium text-[#0a0a0a]">
+                    <span className="truncate max-w-[110px] font-semibold">
+                      {googleUser.displayName || googleUser.email || 'Member'}
+                    </span>
                 <button
                   onClick={handleGoogleSignOut}
                   title="Sign out"
@@ -937,8 +986,10 @@ export default function App() {
         {/* Clay's Signature Horizon 3D Mountain Illustration */}
         <ClayFooterMountains />
       </footer>
+        </>
+      )}
 
-      {/* Modals */}
+      {/* Modals (Active across both Landing Page and Workspace) */}
       {selectedForCard && (
         <CardStudioModal
           key={selectedForCard.id}
@@ -979,8 +1030,9 @@ export default function App() {
                 {
                   id: `wish-${Date.now()}`,
                   title: `${giftTitle} (for ${personName})`,
-                  price: estimatedPrice,
-                  claimedBy: ''
+                  estimatedCost: estimatedPrice,
+                  contributedAmount: 0,
+                  contributors: []
                 },
                 ...prev.wishlist
               ]
