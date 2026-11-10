@@ -206,32 +206,32 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               href="#calculator"
               className="hover:text-[#111B21] hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
             >
-              Countdown Tool
+              Countdown
             </a>
             <a
               href="#features"
               className="hover:text-[#111B21] hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
             >
-              Card Studio
+              Greetings
             </a>
             <a
               href="#festivals"
               className="hover:text-[#111B21] hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
             >
-              Festivals & Visits
+              Festivals
             </a>
             <a
               href="#memories"
               className="hover:text-[#111B21] hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
             >
-              Memories of the Day
+              Photo Moments
             </a>
             <button
               type="button"
               onClick={() => onLaunchApp('wall')}
               className="hover:text-[#111B21] hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
-              Workspace ({birthdays.length})
+              My Circle ({birthdays.length})
             </button>
           </nav>
 
@@ -505,10 +505,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               {/* Left 6 Cols: Interactive Input Form */}
               <div className="lg:col-span-6 space-y-5">
                 <div className="text-[13px] font-semibold text-[#FF5722]">
-                  Interactive Live Preview Tool
+                  Birthday Countdown &amp; Zodiac
                 </div>
                 <h2 className="text-[28px] sm:text-[36px] font-bold text-[#111B21] tracking-tight leading-[1.12]">
-                  Test the Birthday Countdown &amp; Reminder Planner right now.
+                  Never forget a birthday countdown again.
                 </h2>
                 <p className="text-[15px] text-[#374248] leading-relaxed">
                   Enter anyone’s name and birth date below to calculate their exact countdown days, milestone age, zodiac sign, and optimal gift prep schedule—then save them straight to your circle.
@@ -743,7 +743,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Right 6 Cols: Editorial Storytelling Copy */}
             <div className="lg:col-span-6 space-y-5">
               <div className="text-[14px] font-semibold text-[#FF5722]">
-                01. Custom Greeting Studio &amp; 1-Tap Calling
+                01. Greeting Cards &amp; 1-Tap Wishes
               </div>
               <h2
                 className="text-[32px] sm:text-[42px] font-bold text-[#111B21] tracking-tight leading-[1.1]"
@@ -760,7 +760,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   onClick={() => onOpenCardStudio(featuredPerson)}
                   className="h-[46px] px-6 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[14px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                 >
-                  <span>Open Greeting Card Studio</span>
+                  <span>Create a Greeting Card</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
@@ -779,7 +779,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Left 6 Cols: Editorial Copy */}
             <div className="lg:col-span-6 space-y-5 order-2 lg:order-1">
               <div className="text-[14px] font-semibold text-[#111B21]">
-                02. Cultural Festivals &amp; Family Visit Checklists
+                02. Festivals &amp; Family Visits
               </div>
               <h2
                 className="text-[32px] sm:text-[42px] font-bold text-[#111B21] tracking-tight leading-[1.1]"
@@ -796,7 +796,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   onClick={() => onLaunchApp('events')}
                   className="h-[46px] px-6 rounded-full bg-[#111B21] hover:bg-[#24323B] text-white text-[14px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                 >
-                  <span>Open Festivals &amp; Visit Planner</span>
+                  <span>Plan a Festival Visit</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -989,7 +989,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               {/* Right 6 Cols: Editorial Copy for Memories of the Day */}
               <div className="lg:col-span-6 space-y-5">
                 <div className="text-[14px] font-semibold text-[#FF5722]">
-                  03. Memories of the Day &amp; Photo Card Highlights
+                  03. Photo Moments &amp; Memories
                 </div>
                 <h2
                   className="text-[32px] sm:text-[42px] font-bold text-[#111B21] tracking-tight leading-[1.1]"
@@ -998,7 +998,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   Relive your circle’s best moments right on your Dashboard.
                 </h2>
                 <p className="text-[16px] text-[#374248] leading-[1.65] max-w-[58ch]">
-                  Every day, PookieCal curates <strong>Memories of the Day</strong> from your circle’s shared Google Photos albums—surfacing throwback birthdays, family festivals, and trips right on your main Dashboard and inside each member’s Google Hub Photos tab. Pin your favorite photo as Today’s Highlight or share a memory wish on WhatsApp in one tap.
+                  Every day, PookieCal curates <strong>Photo Moments</strong> from your circle’s shared Google Photos albums—surfacing throwback birthdays, family festivals, and trips right on your main Dashboard and inside each member’s Google Hub Photos tab. Pin your favorite photo as Today’s Highlight or share a memory wish on WhatsApp in one tap.
                 </p>
                 <div className="pt-2 flex flex-wrap items-center gap-3">
                   <button
@@ -1006,7 +1006,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     onClick={() => onLaunchApp('wall')}
                     className="h-[46px] px-6 rounded-full bg-[#111B21] hover:bg-[#24323B] text-white text-[14px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                   >
-                    <span>View Dashboard Photo Highlight</span>
+                    <span>View Photo Moments</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                   <button
@@ -1224,7 +1224,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Right 6 Cols: Copy */}
             <div className="lg:col-span-6 space-y-5">
               <div className="text-[14px] font-semibold text-[#FF5722]">
-                04. Group Gift Pools &amp; WhatsApp Circle Invites
+                04. Gift Pool &amp; Circle Invites
               </div>
               <h2
                 className="text-[32px] sm:text-[42px] font-bold text-[#111B21] tracking-tight leading-[1.1]"
@@ -1241,7 +1241,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   onClick={() => onLaunchApp('party')}
                   className="h-[46px] px-6 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[14px] font-semibold inline-flex items-center gap-2 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                 >
-                  <span>Coordinate a Party Pool</span>
+                  <span>Start a Gift Pool</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
@@ -1352,7 +1352,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           <div className="space-y-2">
-            <p className="text-[13px] font-semibold text-[#111B21]">Application Tools</p>
+            <p className="text-[13px] font-semibold text-[#111B21]">Features</p>
             <ul className="space-y-1.5 text-[13px] text-[#525E66]">
               <li>
                 <button
@@ -1360,7 +1360,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   onClick={() => onLaunchApp('wall')}
                   className="hover:text-[#111B21] cursor-pointer"
                 >
-                  Birthday Wall &amp; Reminders
+                  Birthdays &amp; Reminders
                 </button>
               </li>
               <li>
@@ -1369,7 +1369,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   onClick={() => onLaunchApp('events')}
                   className="hover:text-[#111B21] cursor-pointer"
                 >
-                  Festivals &amp; Family Visits
+                  Festivals &amp; Visits
                 </button>
               </li>
               <li>
@@ -1378,14 +1378,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   onClick={() => onLaunchApp('calendar')}
                   className="hover:text-[#111B21] cursor-pointer"
                 >
-                  Year-Round Calendar
+                  Year Calendar
                 </button>
               </li>
             </ul>
           </div>
 
           <div className="space-y-2">
-            <p className="text-[13px] font-semibold text-[#111B21]">Circle Collaboration</p>
+            <p className="text-[13px] font-semibold text-[#111B21]">Sharing &amp; Hub</p>
             <ul className="space-y-1.5 text-[13px] text-[#525E66]">
               <li>
                 <button
@@ -1393,7 +1393,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   onClick={() => onLaunchApp('party')}
                   className="hover:text-[#111B21] cursor-pointer"
                 >
-                  Party &amp; Gift Pool
+                  Gift Pool
                 </button>
               </li>
               <li>
@@ -1402,7 +1402,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   onClick={() => onLaunchApp('googleHub')}
                   className="hover:text-[#111B21] cursor-pointer"
                 >
-                  Google Workspace Hub
+                  Google Hub &amp; Photos
                 </button>
               </li>
               <li>
@@ -1411,7 +1411,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   onClick={onOpenInviteModal}
                   className="hover:text-[#111B21] cursor-pointer"
                 >
-                  WhatsApp Circle Invites
+                  WhatsApp Invites
                 </button>
               </li>
             </ul>

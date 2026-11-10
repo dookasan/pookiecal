@@ -426,7 +426,7 @@ export default function App() {
                   { id: 'wall', label: 'Birthdays' },
                   { id: 'events', label: 'Festivals & Visits' },
                   { id: 'googleHub', label: 'Google Hub' },
-                  { id: 'party', label: 'Party Pool' },
+                  { id: 'party', label: 'Gift Pool' },
                   { id: 'calendar', label: 'Calendar' }
                 ].map((tab) => (
                   <button
@@ -986,7 +986,7 @@ export default function App() {
           <div className="space-y-2">
             <p className="text-[12px] font-semibold uppercase tracking-[1.5px] text-[#0a0a0a]">Collaborate</p>
             <ul className="space-y-1.5 text-[14px] text-[#6a6a6a]">
-              <li><button onClick={() => setActiveTab('party')} className="hover:text-[#0a0a0a] cursor-pointer">Party Pool</button></li>
+              <li><button onClick={() => setActiveTab('party')} className="hover:text-[#0a0a0a] cursor-pointer">Gift Pool</button></li>
               <li><button onClick={() => setActiveTab('googleHub')} className="hover:text-[#0a0a0a] cursor-pointer">Google Hub</button></li>
               <li><button onClick={() => setIsInviteModalOpen(true)} className="hover:text-[#0a0a0a] cursor-pointer">Invite Circle</button></li>
             </ul>
