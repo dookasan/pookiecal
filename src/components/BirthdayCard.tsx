@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, MessageCircle, Calendar, Clock } from 'lucide-react';
+import {
+  Phone,
+  MessageCircle,
+  Calendar,
+  Clock,
+  Gift,
+  Sparkles,
+  Loader2,
+  ExternalLink,
+  RefreshCw
+} from 'lucide-react';
 import { BirthdayPerson } from '../types/birthday';
 import {
   calculateDaysUntilBirthday,
@@ -15,6 +25,10 @@ import {
   getPersonRealisticPortrait,
   getFallbackPortraitDataUrl
 } from '../utils/birthdayUtils';
+import {
+  fetchPersonalizedGiftSuggestion,
+  PersonalizedGiftSuggestion
+} from '../utils/giftSuggestionClient';
 
 interface BirthdayCardProps {
   person: BirthdayPerson;
@@ -66,6 +80,9 @@ export const BirthdayCard: React.FC<BirthdayCardProps> = ({
   onOpenGoogleHub
 }) => {
   const [now, setNow] = useState<Date>(() => new Date());
+  const [giftSuggestion, setGiftSuggestion] = useState<PersonalizedGiftSuggestion | null>(null);
+  const [isLoadingGift, setIsLoadingGift] = useState(false);
+  const [giftError, setGiftError] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -73,6 +90,21 @@ export const BirthdayCard: React.FC<BirthdayCardProps> = ({
     }, 1000);
     return () => window.clearInterval(timer);
   }, []);
+
+  const handleSuggestGift = async () => {
+    setIsLoadingGift(true);
+    setGiftError(null);
+    try {
+      const suggestion = await fetchPersonalizedGiftSuggestion(person);
+      setGiftSuggestion(suggestion);
+    } catch (err: unknown) {
+      setGiftError(
+        err instanceof Error ? err.message : 'Unable to generate gift suggestion right now.'
+      );
+    } finally {
+      setIsLoadingGift(false);
+    }
+  };
 
   const daysLeft = calculateDaysUntilBirthday(person.birthDate, now);
   const exactCountdown = calculateExactTimeUntilBirthday(person.birthDate, now);
@@ -214,7 +246,7 @@ export const BirthdayCard: React.FC<BirthdayCardProps> = ({
         </div>
 
         {/* Embedded Product UI Fragment (`product-mockup-card`) */}
-        <div className="mt-3 bg-[#fffaf0] text-[#0a0a0a] border border-[#e5e5e5] rounded-[16px] p-4 space-y-2">
+        <div className="mt-3 bg-[#fffaf0] text-[#0a0a0a] border border-[#e5e5e5] rounded-[16px] p-4 space-y-2.5">
           {person.notes ? (
             <p className="text-[14px] text-[#3a3a3a] line-clamp-2 leading-[1.45]">
               {person.notes}
@@ -225,16 +257,95 @@ export const BirthdayCard: React.FC<BirthdayCardProps> = ({
             </p>
           )}
 
-          {person.favoriteThings && person.favoriteThings.length > 0 && (
-            <div className="flex flex-wrap items-center gap-1.5 pt-1">
-              {person.favoriteThings.map((item, idx) => (
-                <span
-                  key={idx}
-                  className="px-2.5 py-0.5 rounded-full bg-[#f5f0e0] text-[#0a0a0a] text-[12px] font-medium"
-                >
-                  {item}
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+            {person.favoriteThings && person.favoriteThings.length > 0 ? (
+              <div className="flex flex-wrap items-center gap-1.5">
+                {person.favoriteThings.map((item, idx) => (
+                  <span
+                    key={idx}
+                    className="px-2.5 py-0.5 rounded-full bg-[#f5f0e0] text-[#0a0a0a] text-[12px] font-medium"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <span className="text-[12px] text-[#6a6a6a]">No favorite things listed yet</span>
+            )}
+
+            {/* Suggest Gift Button */}
+            <button
+              type="button"
+              onClick={handleSuggestGift}
+              disabled={isLoadingGift}
+              className="h-[32px] px-3 rounded-full bg-[#FF5722] hover:bg-[#E64A19] disabled:opacity-60 text-white text-[12px] font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
+            >
+              {isLoadingGift ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <span>Suggesting...</span>
+                </>
+              ) : (
+                <>
+                  <Gift className="w-3.5 h-3.5" />
+                  <span>Suggest Gift</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Gemini Personalized Gift Suggestion Result or Error */}
+          {giftError && (
+            <div className="mt-2 p-3 rounded-[12px] bg-[#fff3ee] border border-[#ff5722]/30 text-[12px] text-[#0a0a0a] space-y-1">
+              <p className="font-semibold text-[#FF5722]">Gift Suggestion Notice</p>
+              <p className="text-[#3a3a3a] leading-snug">{giftError}</p>
+            </div>
+          )}
+
+          {giftSuggestion && !giftError && (
+            <div className="mt-2 p-3.5 rounded-[14px] bg-[#f5f0e0] border border-[#e5e5e5] space-y-2">
+              <div className="flex items-start justify-between gap-2">
+                <div className="space-y-0.5 min-w-0">
+                  <div className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.8px] text-[#FF5722]">
+                    <Sparkles className="w-3 h-3" />
+                    <span>Matched to {giftSuggestion.matchedInterest}</span>
+                  </div>
+                  <h4 className="text-[14px] font-bold text-[#0a0a0a] leading-snug">
+                    {giftSuggestion.title}
+                  </h4>
+                </div>
+                <span className="px-2 py-0.5 rounded-full bg-[#fffaf0] border border-[#e5e5e5] text-[11px] font-mono font-semibold text-[#0a0a0a] shrink-0">
+                  {giftSuggestion.priceRange}
                 </span>
-              ))}
+              </div>
+
+              <p className="text-[12px] text-[#3a3a3a] leading-relaxed">
+                {giftSuggestion.reason}
+              </p>
+
+              <div className="flex items-center justify-between gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={handleSuggestGift}
+                  disabled={isLoadingGift}
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#3a3a3a] hover:text-[#0a0a0a] cursor-pointer"
+                >
+                  <RefreshCw className={`w-3 h-3 ${isLoadingGift ? 'animate-spin' : ''}`} />
+                  <span>Another idea</span>
+                </button>
+
+                <a
+                  href={`https://www.google.com/search?tbm=shop&q=${encodeURIComponent(
+                    giftSuggestion.searchQuery || giftSuggestion.title
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[12px] font-semibold text-[#FF5722] hover:underline"
+                >
+                  <span>Shop Gift</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
             </div>
           )}
         </div>
@@ -288,7 +399,7 @@ export const BirthdayCard: React.FC<BirthdayCardProps> = ({
           {onOpenGoogleHub && (
             <button
               onClick={() => onOpenGoogleHub(person)}
-              className="h-10 px-3 rounded-full bg-[#fffaf0] text-[#0a0a0a] border border-[#e5e5e5] text-[13px] font-medium whitespace-nowrap"
+              className="h-10 px-3 rounded-full bg-[#fffaf0] text-[#0a0a0a] border border-[#e5e5e5] text-[13px] font-medium whitespace-nowrap cursor-pointer"
             >
               Hub
             </button>
