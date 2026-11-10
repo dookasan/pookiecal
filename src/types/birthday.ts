@@ -11,8 +11,9 @@ export interface ReminderSetting {
 export interface GuestItem {
   id: string;
   name: string;
-  phone?: string;
-  status: 'confirmed' | 'pending' | 'declined';
+  phone: string;
+  status?: 'confirmed' | 'pending' | 'declined';
+  rsvp?: 'confirmed' | 'invited' | 'maybe' | 'declined' | 'yes' | 'pending' | 'no';
   role?: string; // e.g. "Brings Cake", "Decorator"
 }
 
@@ -25,9 +26,19 @@ export interface WishlistItem {
   link?: string;
 }
 
+export interface ChecklistItem {
+  id: string;
+  text?: string;
+  task?: string;
+  category?: string;
+  assignedTo?: string;
+  done: boolean;
+}
+
 export interface PartyPlan {
   id: string;
-  birthdayId: string;
+  birthdayId?: string;
+  birthdayPersonId?: string;
   title: string;
   theme: string;
   date: string;
@@ -37,7 +48,7 @@ export interface PartyPlan {
   budgetGoal: number;
   guests: GuestItem[];
   wishlist: WishlistItem[];
-  checklist: { id: string; text: string; done: boolean }[];
+  checklist: ChecklistItem[];
   notes: string;
 }
 
@@ -55,7 +66,8 @@ export interface GoogleChatMessage {
   senderAvatar?: string;
   text: string;
   timestamp: string;
-  isSelf: boolean;
+  isSelf?: boolean;
+  platform?: 'google-chat' | 'hangouts' | 'messages';
 }
 
 export interface GoogleEmailItem {
@@ -64,7 +76,9 @@ export interface GoogleEmailItem {
   snippet: string;
   date: string;
   isUnread?: boolean;
-  from: string;
+  unread?: boolean;
+  from?: string;
+  direction?: 'received' | 'sent';
 }
 
 export interface YouTubeChannelInfo {
@@ -80,6 +94,8 @@ export interface YouTubeChannelInfo {
   }[];
 }
 
+export type CardThemeId = 'aurora' | 'sunset' | 'midnight' | 'botanical' | 'confetti' | 'retro' | 'champagne';
+
 export interface BirthdayPerson {
   id: string;
   name: string;
@@ -92,21 +108,20 @@ export interface BirthdayPerson {
   notes?: string;
   favoriteThings?: string[];
   reminders: ReminderSetting;
-  customCardTheme?: string;
+  customCardTheme?: CardThemeId;
   googleConnected?: boolean;
   googleProfile?: {
     googleEmail: string;
     photoUrl?: string;
     youtubeChannel?: YouTubeChannelInfo;
-    recentEmails?: GoogleEmailItem[];
-    chatConversations?: GoogleChatMessage[];
-    sharedPhotos?: GooglePhotoItem[];
+    recentEmails: GoogleEmailItem[];
+    chatConversations: GoogleChatMessage[];
+    sharedPhotos: GooglePhotoItem[];
     connectedSince?: string;
     driveFolderUrl?: string;
+    lastSynced?: string;
   };
 }
-
-export type CardThemeId = 'aurora' | 'sunset' | 'retro' | 'champagne' | 'midnight' | 'confetti';
 
 export interface CardTheme {
   id: CardThemeId;
@@ -185,6 +200,7 @@ export interface InviteRecord {
   contactValue?: string;
   customMessage?: string;
   includeReferralRequest: boolean;
+  referralGoal?: number;
   referralNote?: string;
   status: 'sent' | 'viewed' | 'joined' | 'chain_active';
   sentAt: string;
@@ -192,4 +208,5 @@ export interface InviteRecord {
   inviteUrl: string;
   downstreamReferrals: DownstreamMember[];
 }
+
 

@@ -125,6 +125,14 @@ class SoundEffectsManager {
       // Audio not supported or policy restricted
     }
   }
+
+  /**
+   * Celebration Fanfare alias
+   */
+  playCelebrationFanfare() {
+    this.playBirthdayChime();
+  }
 }
 
 export const sounds = new SoundEffectsManager();
+

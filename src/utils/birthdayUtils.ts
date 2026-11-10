@@ -328,4 +328,36 @@ export function getFallbackPortraitDataUrl(name: string): string {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
+const CELEBRATION_BANNERS = [
+  '/assets/mastery/step-3-birthday-cake.jpg',
+  '/assets/mastery/gift-box-luxury.jpg',
+  '/assets/mastery/festive-table-banner.jpg',
+  '/assets/mastery/hero-circle-celebration.jpg',
+  '/assets/mastery/step-2-share-circle.jpg',
+  '/assets/mastery/step-1-personal-link.jpg'
+];
+
+export function getCelebrationBannerImage(person: BirthdayPerson, index = 0): string {
+  const sharedPhoto = person.googleProfile?.sharedPhotos?.[0]?.url;
+  if (sharedPhoto && sharedPhoto.startsWith('/')) {
+    return sharedPhoto;
+  }
+  return CELEBRATION_BANNERS[Math.abs(index) % CELEBRATION_BANNERS.length];
+}
+
+export function getGiftCategoryImage(queryText = ''): string {
+  const q = queryText.toLowerCase();
+  if (q.includes('cake') || q.includes('sweet') || q.includes('food') || q.includes('chocolate')) {
+    return '/assets/mastery/step-3-birthday-cake.jpg';
+  }
+  if (q.includes('diwali') || q.includes('festival') || q.includes('candle') || q.includes('home')) {
+    return '/assets/mastery/festive-table-banner.jpg';
+  }
+  if (q.includes('travel') || q.includes('party') || q.includes('dinner')) {
+    return '/assets/mastery/hero-circle-celebration.jpg';
+  }
+  return '/assets/mastery/gift-box-luxury.jpg';
+}
+
+
 

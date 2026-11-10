@@ -11,7 +11,7 @@ import {
   RotateCcw,
   Wand2
 } from 'lucide-react';
-import { BirthdayPerson, CardTheme } from '../types/birthday';
+import { BirthdayPerson, CardThemeId } from '../types/birthday';
 import {
   calculateTurningAge,
   generatePersonalizedWishes,
@@ -25,8 +25,10 @@ interface CardStudioModalProps {
   onOpenCallModal: (person: BirthdayPerson) => void;
 }
 
+type StudioThemeKey = 'aurora' | 'sunset' | 'midnight' | 'botanical' | 'confetti';
+
 const CARD_THEMES: Record<
-  CardTheme,
+  StudioThemeKey,
   {
     name: string;
     cardClass: string;
@@ -74,9 +76,12 @@ export const CardStudioModal: React.FC<CardStudioModalProps> = ({
   const turningAge = calculateTurningAge(person.birthDate);
   const presetWishes = generatePersonalizedWishes(person);
 
-  const [selectedTheme, setSelectedTheme] = useState<CardTheme>(
-    person.customCardTheme || 'aurora'
-  );
+  const initialTheme: StudioThemeKey =
+    person.customCardTheme && person.customCardTheme in CARD_THEMES
+      ? (person.customCardTheme as StudioThemeKey)
+      : 'aurora';
+
+  const [selectedTheme, setSelectedTheme] = useState<StudioThemeKey>(initialTheme);
   const [message, setMessage] = useState<string>(presetWishes[0]);
   const [senderName, setSenderName] = useState<string>('With Love');
   const [candlesLit, setCandlesLit] = useState<boolean[]>([true, true, true, true, true]);
@@ -270,7 +275,7 @@ export const CardStudioModal: React.FC<CardStudioModalProps> = ({
                   1. Clay Card Surface
                 </label>
                 <div className="grid grid-cols-3 gap-2">
-                  {(Object.keys(CARD_THEMES) as CardTheme[]).map((tKey) => (
+                  {(Object.keys(CARD_THEMES) as StudioThemeKey[]).map((tKey) => (
                     <button
                       key={tKey}
                       type="button"

@@ -83,7 +83,7 @@ export const PartyPlannerView: React.FC<PartyPlannerViewProps> = ({
     const newGuest: GuestItem = {
       id: `g-${Date.now()}`,
       name: newGuestName.trim(),
-      phone: newGuestPhone.trim() || undefined,
+      phone: newGuestPhone.trim() || '',
       rsvp: 'invited'
     };
     onUpdatePartyPlan({

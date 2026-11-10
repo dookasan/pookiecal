@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import {
   Calendar,
   Phone,
@@ -321,29 +322,44 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
               </div>
 
-              {/* Right 6 Columns: WhatsApp.com-Style Layered Conversation & Reminder Scene */}
+              {/* Right 6 Columns: WhatsApp.com-Style Layered Conversation & Reminder Scene + Realistic Celebration Photo */}
               <div className="lg:col-span-6 flex flex-col justify-between rounded-[24px] bg-[#111B21] text-[#FCFBF7] p-6 sm:p-8 relative overflow-hidden border border-[#24323B]">
-                {/* Top Header inside Live Visual Card */}
-                <div className="flex items-center justify-between gap-4 pb-5 border-b border-white/10">
-                  <div>
-                    <div className="text-[12px] text-[#A4D4C5] font-medium">
-                      Live Circle Notification Feed
-                    </div>
-                    <h2 className="text-[19px] font-semibold text-white mt-0.5">
-                      Your Upcoming Celebration Stream
-                    </h2>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => onLaunchApp('calendar')}
-                    className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-[12px] font-semibold text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                {/* Realistic Celebration Photography Header inside Hero Card */}
+                <div className="relative h-44 sm:h-48 rounded-[18px] overflow-hidden mb-5 border border-white/15 group">
+                  <img
+                    src="/assets/mastery/hero-circle-celebration.jpg"
+                    alt="Family and friends celebrating a birthday together"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#111B21] via-[#111B21]/30 to-transparent" />
+                  <motion.div
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+                    className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#FF5722] text-white text-[11px] font-bold uppercase tracking-[1px]"
                   >
-                    View Full Calendar →
-                  </button>
+                    Live Circle Celebration Stream
+                  </motion.div>
+                  <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between gap-2">
+                    <div>
+                      <div className="text-[11px] text-[#A4D4C5] font-semibold">
+                        Real-Time Countdowns &amp; AI Gift Ideas
+                      </div>
+                      <h2 className="text-[18px] font-bold text-white leading-tight">
+                        Your Upcoming Celebration Stream
+                      </h2>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => onLaunchApp('calendar')}
+                      className="px-3.5 py-1.5 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-xs text-[12px] font-semibold text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                    >
+                      View Calendar →
+                    </button>
+                  </div>
                 </div>
 
                 {/* Floating Interactive Message Bubbles (WhatsApp.com signature motif) */}
-                <div className="space-y-3.5 my-5">
+                <div className="space-y-3.5 mb-5">
                   {/* Bubble 1: Upcoming Birthday Alert */}
                   <div className="rounded-[20px] bg-[#FCFBF7] text-[#111B21] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="space-y-1">
@@ -807,20 +823,31 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
             </div>
 
-            {/* Right 6 Cols: Interactive Festival Prep Checklist Card */}
-            <div className="lg:col-span-6 rounded-[32px] bg-[#F4EFE6] border border-[#E6E0D3] p-6 sm:p-8 space-y-5 order-1 lg:order-2">
-              <div className="flex items-center justify-between gap-3 pb-4 border-b border-[#E6E0D3]">
-                <div>
-                  <div className="text-[12px] text-[#525E66] font-medium">
-                    Interactive Festival Checklist · Click any item to toggle
+            {/* Right 6 Cols: Interactive Festival Prep Checklist Card + Realistic Festive Table Image */}
+            <motion.div
+              whileHover={{ y: -4 }}
+              className="lg:col-span-6 rounded-[32px] bg-[#F4EFE6] border border-[#E6E0D3] p-6 sm:p-8 space-y-5 order-1 lg:order-2 group"
+            >
+              <div className="relative h-44 rounded-[20px] overflow-hidden border border-[#D6CFC0]">
+                <img
+                  src="/assets/mastery/festive-table-banner.jpg"
+                  alt="Festive Diwali sweets, brass diyas, and celebration table"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#111B21]/85 via-[#111B21]/20 to-transparent" />
+                <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between gap-2 text-white">
+                  <div>
+                    <div className="text-[11px] font-semibold uppercase tracking-[1px] text-[#FFB084]">
+                      Interactive Festival Checklist · Click to toggle
+                    </div>
+                    <h3 className="text-[19px] font-bold">
+                      Diwali Home Visit — Sharma Family
+                    </h3>
                   </div>
-                  <h3 className="text-[20px] font-bold text-[#111B21] mt-0.5">
-                    Diwali Home Visit — Sharma Family
-                  </h3>
+                  <span className="px-3 py-1 rounded-full bg-[#FF5722] text-white text-[12px] font-mono font-bold tabular-nums shrink-0">
+                    {demoPrepItems.filter((i) => i.done).length}/{demoPrepItems.length} Done
+                  </span>
                 </div>
-                <span className="text-[13px] font-mono font-semibold text-[#111B21] tabular-nums">
-                  {demoPrepItems.filter((i) => i.done).length}/{demoPrepItems.length} Done
-                </span>
               </div>
 
               <div className="space-y-2.5">
@@ -872,7 +899,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   Plan Your Own Visit →
                 </button>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* SPLIT 03: MEMORIES OF THE DAY & GOOGLE PHOTOS DASHBOARD HIGHLIGHTS */}
@@ -1164,20 +1191,31 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         {/* SECTION 5: SPLIT 04 — COLLABORATIVE PARTY POOL & WHATSAPP CIRCLE INVITES */}
         <section className="max-w-[1280px] mx-auto px-4 sm:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            {/* Left 6 Cols: Party Pool & Gift Contribution Visual */}
-            <div className="lg:col-span-6 rounded-[32px] bg-[#F4EFE6] border border-[#E6E0D3] p-6 sm:p-8 space-y-5">
-              <div className="flex items-center justify-between border-b border-[#E6E0D3] pb-4">
-                <div>
-                  <div className="text-[12px] text-[#525E66] font-medium">
-                    Collaborative Surprise Party &amp; Gift Pool
+            {/* Left 6 Cols: Party Pool & Gift Contribution Visual + Realistic Luxury Gift Image */}
+            <motion.div
+              whileHover={{ y: -4 }}
+              className="lg:col-span-6 rounded-[32px] bg-[#F4EFE6] border border-[#E6E0D3] p-6 sm:p-8 space-y-5 group"
+            >
+              <div className="relative h-44 rounded-[20px] overflow-hidden border border-[#D6CFC0]">
+                <img
+                  src="/assets/mastery/gift-box-luxury.jpg"
+                  alt="Curated luxury birthday gift box wrapped in terracotta linen ribbon"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#111B21]/85 via-[#111B21]/20 to-transparent" />
+                <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between gap-2 text-white">
+                  <div>
+                    <div className="text-[11px] font-semibold uppercase tracking-[1px] text-[#A4D4C5]">
+                      Collaborative Surprise Party &amp; AI Gift Pool
+                    </div>
+                    <h3 className="text-[19px] font-bold">
+                      Maya’s Rooftop Birthday Pool
+                    </h3>
                   </div>
-                  <h3 className="text-[20px] font-bold text-[#111B21] mt-0.5">
-                    Maya’s Rooftop Birthday Pool
-                  </h3>
+                  <span className="px-3 py-1 rounded-full bg-[#FF5722] text-white text-[12px] font-mono font-bold tabular-nums shrink-0">
+                    $310 / $350 Goal
+                  </span>
                 </div>
-                <span className="text-[13px] font-mono font-semibold text-[#111B21] tabular-nums">
-                  $310 / $350 Goal
-                </span>
               </div>
 
               <div className="space-y-3">
@@ -1224,7 +1262,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   Share WhatsApp Invite Link
                 </button>
               </div>
-            </div>
+            </motion.div>
 
             {/* Right 6 Cols: Copy */}
             <div className="lg:col-span-6 space-y-5">
