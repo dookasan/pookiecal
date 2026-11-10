@@ -11,7 +11,9 @@ import {
   getDirectCallUri,
   getWhatsAppShareUrl,
   getGoogleCalendarLink,
-  formatRelationship
+  formatRelationship,
+  getPersonRealisticPortrait,
+  getFallbackPortraitDataUrl
 } from '../utils/birthdayUtils';
 
 interface BirthdayCardProps {
@@ -78,6 +80,7 @@ export const BirthdayCard: React.FC<BirthdayCardProps> = ({
   const age = calculateUpcomingAge(person.birthDate, now);
   const isMilestone = isMilestoneAge(age);
   const zodiac = getZodiacSign(person.birthDate);
+  const portraitUrl = getPersonRealisticPortrait(person, colorIndex);
 
   const [, monthStr, dayStr] = person.birthDate.split('-');
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -99,11 +102,21 @@ export const BirthdayCard: React.FC<BirthdayCardProps> = ({
       className={`${variant.bgClass} p-6 sm:p-7 flex flex-col justify-between transition-transform`}
     >
       <div>
-        {/* Top Row: Avatar, Name & Pill Countdown Badge */}
+        {/* Top Row: Realistic Portrait Avatar, Name & Pill Countdown Badge */}
         <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-12 h-12 rounded-full bg-[#fffaf0] text-[#0a0a0a] flex items-center justify-center text-xl shrink-0 border border-[#e5e5e5]">
-              {person.avatarEmoji || '🎂'}
+          <div className="flex items-center gap-3.5 min-w-0">
+            <div className="relative w-13 h-13 rounded-full overflow-hidden bg-[#111B21] shrink-0 border-2 border-[#fffaf0] shadow-xs">
+              <img
+                src={portraitUrl}
+                alt={person.name}
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.onerror = null;
+                  target.src = getFallbackPortraitDataUrl(person.name);
+                }}
+                className="w-full h-full object-cover"
+              />
             </div>
 
             <div className="min-w-0">

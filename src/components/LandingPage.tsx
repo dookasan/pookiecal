@@ -1261,77 +1261,84 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
         </section>
 
-        {/* SECTION 5B: 3 STEPS TO BIRTHDAY MASTERY & CONNECTED PROFILES SHOWCASE */}
+        {/* SECTION 5B: 3 STEPS TO BIRTHDAY MASTERY & CONNECTED PROFILES SHOWCASE (REALISTIC EDITORIAL PHOTOGRAPHY) */}
         <section id="birthday-mastery" className="max-w-[1280px] mx-auto px-4 sm:px-8 py-12">
-          <div className="rounded-[32px] bg-white border border-[#E6E0D3] px-6 sm:px-12 py-12 sm:py-16 shadow-xs space-y-12">
-            <div className="text-center max-w-2xl mx-auto space-y-2.5">
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#F4EFE6] text-[#111B21] text-[12px] font-semibold uppercase tracking-[1.2px]">
-                Connected Friends &amp; Family Profiles
-              </span>
-              <h2 className="text-[30px] sm:text-[42px] font-bold text-[#1B3138] tracking-tight">
-                3 steps to birthday mastery!
-              </h2>
-              <p className="text-[15px] text-[#4A5A62]">
+          <div className="rounded-[32px] bg-[#FCFBF7] border border-[#E6E0D3] px-6 sm:px-10 py-10 sm:py-14 space-y-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#E6E0D3] pb-6">
+              <div className="space-y-2 max-w-2xl">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#F4EFE6] text-[#FF5722] text-[12px] font-bold uppercase tracking-[1.2px]">
+                  Connected Friends &amp; Family Profiles
+                </span>
+                <h2 className="text-[30px] sm:text-[42px] font-bold text-[#111B21] tracking-tight leading-tight">
+                  3 steps to birthday mastery!
+                </h2>
+              </div>
+              <p className="text-[15px] text-[#4A5A62] max-w-md">
                 Never chase down birth dates manually again. Share your personal PookieCal collector link and watch your connected circle build itself.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-7 lg:gap-8">
               {/* Step 1 */}
-              <div className="flex flex-col items-center text-center">
-                <div className="mb-6">
-                  <MasteryStepLinkIcon />
+              <div className="rounded-[28px] bg-[#F4EFE6] border border-[#E6E0D3] p-4 sm:p-5 flex flex-col justify-between space-y-4">
+                <MasteryStepLinkIcon />
+                <div className="px-1 pb-1 space-y-2">
+                  <h3 className="text-[21px] font-bold text-[#111B21] tracking-tight">
+                    We give you a personal link
+                  </h3>
+                  <p className="text-[14px] text-[#4A5A62] leading-relaxed">
+                    It’s customized with your name so everyone in your family and friend group immediately recognizes it’s from you.
+                  </p>
                 </div>
-                <h3 className="text-[22px] font-bold text-[#1B3138] mb-2.5">
-                  We give you a link
-                </h3>
-                <p className="text-[15px] text-[#4A5A62] leading-relaxed max-w-[30ch]">
-                  It’s customized with your name so everyone will recognize it’s from you.
-                </p>
               </div>
 
               {/* Step 2 */}
-              <div className="flex flex-col items-center text-center">
-                <div className="mb-6">
-                  <MasteryStepPhoneIcon />
+              <div className="rounded-[28px] bg-[#F4EFE6] border border-[#E6E0D3] p-4 sm:p-5 flex flex-col justify-between space-y-4">
+                <MasteryStepPhoneIcon />
+                <div className="px-1 pb-1 space-y-2">
+                  <h3 className="text-[21px] font-bold text-[#111B21] tracking-tight">
+                    Send your link to family &amp; friends
+                  </h3>
+                  <p className="text-[14px] text-[#4A5A62] leading-relaxed">
+                    We import your contacts’ emails to save you time, or share directly on WhatsApp and iMessage—it’s completely up to you.
+                  </p>
                 </div>
-                <h3 className="text-[22px] font-bold text-[#1B3138] mb-2.5 max-w-[20ch]">
-                  Send your link to family and friends
-                </h3>
-                <p className="text-[15px] text-[#4A5A62] leading-relaxed max-w-[32ch]">
-                  We import your contacts’ emails to save you time. Or you can enter them on your own. It’s up to you!
-                </p>
               </div>
 
               {/* Step 3 */}
-              <div className="flex flex-col items-center text-center">
-                <div className="mb-6">
-                  <MasteryStepCakeIcon />
+              <div className="rounded-[28px] bg-[#F4EFE6] border border-[#E6E0D3] p-4 sm:p-5 flex flex-col justify-between space-y-4">
+                <MasteryStepCakeIcon />
+                <div className="px-1 pb-1 space-y-2">
+                  <h3 className="text-[21px] font-bold text-[#111B21] tracking-tight">
+                    You get the birthday automatically
+                  </h3>
+                  <p className="text-[14px] text-[#4A5A62] leading-relaxed">
+                    They enter their name, email, and birth date in our short form—and their live countdown starts immediately!
+                  </p>
                 </div>
-                <h3 className="text-[22px] font-bold text-[#1B3138] mb-2.5">
-                  You get the birthday
-                </h3>
-                <p className="text-[15px] text-[#4A5A62] leading-relaxed max-w-[30ch]">
-                  They enter their name, email, and birth date in our short form and you’re all set!
-                </p>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-              <button
-                type="button"
-                onClick={() => onLaunchApp('connections')}
-                className="h-[48px] px-9 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[13px] font-bold uppercase tracking-[1.6px] transition-colors cursor-pointer"
-              >
-                Get Your Personal Link →
-              </button>
-              <button
-                type="button"
-                onClick={() => onLaunchApp('connections')}
-                className="h-[48px] px-9 rounded-full border border-[#D5DCE0] bg-white hover:bg-[#F7F9FA] text-[#1B3138] text-[13px] font-semibold uppercase tracking-[1.6px] transition-colors cursor-pointer"
-              >
-                Learn More · View Connected Profiles
-              </button>
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-[#E6E0D3]">
+              <span className="text-[14px] text-[#4A5560]">
+                Includes realistic member portraits, live second-by-second countdowns &amp; 1-tap wishes.
+              </span>
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => onLaunchApp('connections')}
+                  className="h-[46px] px-7 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[13px] font-bold uppercase tracking-[1.4px] transition-colors cursor-pointer"
+                >
+                  Get Your Personal Link →
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onLaunchApp('connections')}
+                  className="h-[46px] px-6 rounded-full border border-[#D5DCE0] bg-white hover:bg-[#F7F9FA] text-[#111B21] text-[13px] font-semibold uppercase tracking-[1.4px] transition-colors cursor-pointer"
+                >
+                  View Connected Profiles
+                </button>
+              </div>
             </div>
           </div>
         </section>

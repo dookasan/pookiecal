@@ -282,3 +282,50 @@ export function generatePersonalizedWishes(person: BirthdayPerson): string[] {
   ];
 }
 
+const REALISTIC_PORTRAIT_POOL = [
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80',
+  'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80'
+];
+
+export function getPersonRealisticPortrait(person: BirthdayPerson, index = 0): string {
+  if (person.googleProfile?.photoUrl) {
+    return person.googleProfile.photoUrl;
+  }
+  const sharedFirst = person.googleProfile?.sharedPhotos?.[0]?.url;
+  if (sharedFirst) {
+    return sharedFirst;
+  }
+  let hash = index;
+  for (let i = 0; i < person.name.length; i++) {
+    hash = (hash * 31 + person.name.charCodeAt(i)) % REALISTIC_PORTRAIT_POOL.length;
+  }
+  return REALISTIC_PORTRAIT_POOL[Math.abs(hash) % REALISTIC_PORTRAIT_POOL.length];
+}
+
+export function getFallbackPortraitDataUrl(name: string): string {
+  const initials = name
+    .split(/\s+/)
+    .map((part) => part[0] || '')
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#FF5722"/>
+        <stop offset="100%" stop-color="#111B21"/>
+      </linearGradient>
+    </defs>
+    <rect width="200" height="200" rx="100" fill="url(#g)"/>
+    <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="#FCFBF7" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="68">${initials}</text>
+  </svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
+

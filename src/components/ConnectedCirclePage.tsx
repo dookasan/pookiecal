@@ -14,7 +14,9 @@ import {
   Calendar,
   ArrowRight,
   CheckCircle2,
-  Clock
+  Clock,
+  Link2,
+  Cake
 } from 'lucide-react';
 import { BirthdayPerson, InviteRecord, Relationship } from '../types/birthday';
 import {
@@ -23,7 +25,9 @@ import {
   calculateTurningAge,
   getZodiacSign,
   formatBirthDateShort,
-  getWhatsAppShareUrl
+  getWhatsAppShareUrl,
+  getPersonRealisticPortrait,
+  getFallbackPortraitDataUrl
 } from '../utils/birthdayUtils';
 import { AppUser } from '../utils/googleAuth';
 
@@ -50,93 +54,82 @@ interface ConnectedCirclePageProps {
 }
 
 /**
- * Custom SVG emblems matching the "3 steps to birthday mastery!" visual language:
- * 1. Teal Circle (#147D84) with Link Chain + Long Diagonal Shadow
- * 2. Golden Yellow Circle (#F3C62F) with Smartphone & Message Bubble + Long Diagonal Shadow
- * 3. Deep Slate Circle (#3E5A68) with 3-Candle Birthday Cake + Long Diagonal Shadow
+ * Redesigned Realistic Editorial Photography Cards for the 3-Step Birthday Collector Flow.
+ * Replaces flat vector circles with high-craft studio & lifestyle photography + glassmorphic badges.
  */
 export const MasteryStepLinkIcon: React.FC = () => (
-  <svg viewBox="0 0 160 160" className="w-28 h-28 sm:w-32 sm:h-32 mx-auto block" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <clipPath id="step1Clip">
-        <circle cx="80" cy="80" r="74" />
-      </clipPath>
-    </defs>
-    <g clipPath="url(#step1Clip)">
-      <circle cx="80" cy="80" r="74" fill="#147D84" />
-      {/* Long diagonal shadow */}
-      <path d="M52 108 L108 52 L165 109 L165 165 L109 165 Z" fill="#0D585D" />
-      {/* Interlocking Link Chain Icon */}
-      <g transform="rotate(-45 80 80)">
-        <rect x="44" y="64" width="44" height="32" rx="16" stroke="#FFFFFF" strokeWidth="10" />
-        <rect x="72" y="64" width="44" height="32" rx="16" stroke="#FFFFFF" strokeWidth="10" />
-      </g>
-    </g>
-  </svg>
+  <div className="relative w-full aspect-[4/3] rounded-[24px] overflow-hidden border border-[#E6E0D3] bg-[#111B21] shadow-sm group">
+    <img
+      src="/assets/mastery/step-1-personal-link.jpg"
+      alt="Smartphone and wax-sealed personal invitation on travertine stone"
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-[#111B21]/85 via-[#111B21]/15 to-transparent" />
+    <div className="absolute top-3.5 left-3.5">
+      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#111B21]/80 backdrop-blur-xs text-[#FCFBF7] text-[11px] font-bold uppercase tracking-[1.2px] border border-white/15">
+        <Link2 className="w-3.5 h-3.5 text-[#FF5722]" />
+        <span>Step 01 · Personal Link</span>
+      </span>
+    </div>
+    <div className="absolute bottom-3.5 left-3.5 right-3.5 px-3.5 py-2 rounded-[14px] bg-[#FCFBF7]/95 backdrop-blur-xs border border-[#E6E0D3] flex items-center justify-between gap-2 text-left">
+      <span className="font-mono text-[12px] font-semibold text-[#111B21] truncate">
+        pookiecal.com/?by=YourName
+      </span>
+      <span className="px-2 py-0.5 rounded-full bg-[#FF5722] text-white text-[10px] font-bold uppercase shrink-0">
+        Custom URL
+      </span>
+    </div>
+  </div>
 );
 
 export const MasteryStepPhoneIcon: React.FC = () => (
-  <svg viewBox="0 0 160 160" className="w-28 h-28 sm:w-32 sm:h-32 mx-auto block" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <clipPath id="step2Clip">
-        <circle cx="80" cy="80" r="74" />
-      </clipPath>
-    </defs>
-    <g clipPath="url(#step2Clip)">
-      <circle cx="80" cy="80" r="74" fill="#F3C62F" />
-      {/* Long diagonal shadow */}
-      <path d="M56 122 L106 44 L165 103 L165 165 L99 165 Z" fill="#D5AB1E" />
-      {/* Smartphone Body */}
-      <rect x="50" y="36" width="48" height="88" rx="8" fill="#FFFFFF" />
-      <rect x="56" y="45" width="36" height="62" rx="3" fill="#F3C62F" />
-      <circle cx="74" cy="116" r="4" fill="#F3C62F" />
-      {/* Speech Bubble Overlapping Phone */}
-      <path
-        d="M72 64 C72 52 84 44 98 44 C112 44 124 52 124 64 C124 76 112 84 98 84 C93 84 89 83 85 81 L73 87 L76 76 C73 72 72 68 72 64 Z"
-        fill="#FFFFFF"
-        stroke="#F3C62F"
-        strokeWidth="4"
-      />
-      <rect x="84" y="58" width="26" height="4.5" rx="2.25" fill="#F3C62F" />
-      <rect x="84" y="67" width="20" height="4.5" rx="2.25" fill="#F3C62F" />
-    </g>
-  </svg>
+  <div className="relative w-full aspect-[4/3] rounded-[24px] overflow-hidden border border-[#E6E0D3] bg-[#111B21] shadow-sm group">
+    <img
+      src="/assets/mastery/step-2-share-circle.jpg"
+      alt="Friends and family gathered around a sunlit table sharing invitations"
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-[#111B21]/85 via-[#111B21]/15 to-transparent" />
+    <div className="absolute top-3.5 left-3.5">
+      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#111B21]/80 backdrop-blur-xs text-[#FCFBF7] text-[11px] font-bold uppercase tracking-[1.2px] border border-white/15">
+        <Share2 className="w-3.5 h-3.5 text-[#FFB084]" />
+        <span>Step 02 · Invite Circle</span>
+      </span>
+    </div>
+    <div className="absolute bottom-3.5 left-3.5 right-3.5 px-3.5 py-2 rounded-[14px] bg-[#FCFBF7]/95 backdrop-blur-xs border border-[#E6E0D3] flex items-center justify-between gap-2 text-left">
+      <span className="text-[12px] font-semibold text-[#111B21] truncate">
+        WhatsApp · Email · Contact Import
+      </span>
+      <span className="px-2 py-0.5 rounded-full bg-[#111B21] text-white text-[10px] font-bold uppercase shrink-0">
+        1-Tap Send
+      </span>
+    </div>
+  </div>
 );
 
 export const MasteryStepCakeIcon: React.FC = () => (
-  <svg viewBox="0 0 160 160" className="w-28 h-28 sm:w-32 sm:h-32 mx-auto block" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <clipPath id="step3Clip">
-        <circle cx="80" cy="80" r="74" />
-      </clipPath>
-    </defs>
-    <g clipPath="url(#step3Clip)">
-      <circle cx="80" cy="80" r="74" fill="#3E5A68" />
-      {/* Long diagonal shadow */}
-      <path d="M46 116 L104 48 L165 109 L165 165 L95 165 Z" fill="#2C424D" />
-      {/* 3 Candles */}
-      <rect x="59" y="54" width="6" height="22" rx="2" fill="#FFFFFF" />
-      <path d="M62 42 C65 46 66 50 62 52 C58 50 59 46 62 42 Z" fill="#FFFFFF" />
-      <rect x="77" y="54" width="6" height="22" rx="2" fill="#FFFFFF" />
-      <path d="M80 42 C83 46 84 50 80 52 C76 50 77 46 80 42 Z" fill="#FFFFFF" />
-      <rect x="95" y="54" width="6" height="22" rx="2" fill="#FFFFFF" />
-      <path d="M98 42 C101 46 102 50 98 52 C94 50 95 46 98 42 Z" fill="#FFFFFF" />
-      {/* Cake Top & Base */}
-      <rect x="44" y="76" width="72" height="40" rx="6" fill="#FFFFFF" />
-      {/* Frosting Wave */}
-      <path
-        d="M44 92 Q53 85 62 92 T80 92 T98 92 T116 92"
-        stroke="#3E5A68"
-        strokeWidth="4.5"
-        fill="none"
-      />
-      {/* Cake Dots */}
-      <circle cx="56" cy="105" r="3" fill="#3E5A68" />
-      <circle cx="72" cy="105" r="3" fill="#3E5A68" />
-      <circle cx="88" cy="105" r="3" fill="#3E5A68" />
-      <circle cx="104" cy="105" r="3" fill="#3E5A68" />
-    </g>
-  </svg>
+  <div className="relative w-full aspect-[4/3] rounded-[24px] overflow-hidden border border-[#E6E0D3] bg-[#111B21] shadow-sm group">
+    <img
+      src="/assets/mastery/step-3-birthday-cake.jpg"
+      alt="Artisanal tiered birthday cake with glowing beeswax candles"
+      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-[#111B21]/85 via-[#111B21]/15 to-transparent" />
+    <div className="absolute top-3.5 left-3.5">
+      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#111B21]/80 backdrop-blur-xs text-[#FCFBF7] text-[11px] font-bold uppercase tracking-[1.2px] border border-white/15">
+        <Cake className="w-3.5 h-3.5 text-[#A4D4C5]" />
+        <span>Step 03 · Auto-Sync</span>
+      </span>
+    </div>
+    <div className="absolute bottom-3.5 left-3.5 right-3.5 px-3.5 py-2 rounded-[14px] bg-[#FCFBF7]/95 backdrop-blur-xs border border-[#E6E0D3] flex items-center justify-between gap-2 text-left">
+      <span className="text-[12px] font-semibold text-[#111B21] truncate">
+        Name, Birth Date &amp; Gift Likes Saved
+      </span>
+      <span className="px-2 py-0.5 rounded-full bg-[#147D84] text-white text-[10px] font-bold uppercase shrink-0">
+        Connected
+      </span>
+    </div>
+  </div>
 );
 
 export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
@@ -338,7 +331,10 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
       id: `joined-${Date.now()}`,
       name: invite.inviteeName,
       birthDate: `1995-${randomMonth}-${randomDay}`,
-      phone: invite.contactValue && !invite.contactValue.includes('@') ? invite.contactValue : '+1 (555) 778-9900',
+      phone:
+        invite.contactValue && !invite.contactValue.includes('@')
+          ? invite.contactValue
+          : '+1 (555) 778-9900',
       email:
         invite.contactValue && invite.contactValue.includes('@')
           ? invite.contactValue
@@ -379,66 +375,142 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
 
   return (
     <div className="space-y-12">
-      {/* MODULE 1: "3 STEPS TO BIRTHDAY MASTERY!" — RECEIVE BIRTHDAYS HERO MODULE */}
-      <section className="rounded-[32px] bg-[#FCFBF7] border border-[#E6E0D3] p-6 sm:p-10 lg:p-12 space-y-10">
-        <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="text-[13px] font-semibold text-[#FF5722]">
-            Effortless Birthday Collection · Personal Invite Link
+      {/* EDITORIAL PHOTOGRAPHIC HERO BANNER FOR CONNECTED CIRCLE */}
+      <section className="relative rounded-[32px] overflow-hidden border border-[#E6E0D3] bg-[#111B21] text-[#FCFBF7]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+          {/* Left 7 Cols: Editorial Copy + Quick Collector Link */}
+          <div className="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between space-y-6">
+            <div className="space-y-4">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-[#FFB084] text-[12px] font-semibold uppercase tracking-[1.4px]">
+                <span>Connected Friends &amp; Family Circle</span>
+              </span>
+              <h1
+                className="text-[32px] sm:text-[44px] font-bold text-white tracking-tight leading-[1.08]"
+                style={{ textWrap: 'balance' }}
+              >
+                Your closest people, their exact birthdays, one personal link.
+              </h1>
+              <p className="text-[15px] sm:text-[16px] text-[#D0D8DD] leading-relaxed max-w-[54ch]">
+                Share your customized PookieCal collector link with family and friends. When they fill out our 10-second birthday card, their portrait, birth date, live countdown timer, and gift preferences appear here automatically.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3 pt-2">
+              <div className="p-3.5 rounded-[18px] bg-white/8 border border-white/10">
+                <div className="text-[22px] sm:text-[26px] font-bold text-white tabular-nums">
+                  {birthdays.length}
+                </div>
+                <div className="text-[11px] font-semibold uppercase tracking-[1px] text-[#A4D4C5]">
+                  Connected Profiles
+                </div>
+              </div>
+              <div className="p-3.5 rounded-[18px] bg-white/8 border border-white/10">
+                <div className="text-[22px] sm:text-[26px] font-bold text-[#FF5722] tabular-nums">
+                  {familyCount + friendCount}
+                </div>
+                <div className="text-[11px] font-semibold uppercase tracking-[1px] text-[#D0D8DD]">
+                  Family &amp; Friends
+                </div>
+              </div>
+              <div className="p-3.5 rounded-[18px] bg-white/8 border border-white/10">
+                <div className="text-[22px] sm:text-[26px] font-bold text-[#FFB084] tabular-nums">
+                  {pendingInvites.length}
+                </div>
+                <div className="text-[11px] font-semibold uppercase tracking-[1px] text-[#D0D8DD]">
+                  Awaiting Reply
+                </div>
+              </div>
+            </div>
           </div>
-          <h1
-            className="text-[32px] sm:text-[44px] font-bold text-[#111B21] tracking-tight leading-[1.1]"
-            style={{ textWrap: 'balance' }}
-          >
-            3 steps to birthday mastery!
-          </h1>
-          <p className="text-[15px] sm:text-[16px] text-[#4A5560] leading-relaxed">
-            Stop chasing relatives and friends across group chats. Share your personal PookieCal link once and receive everyone’s exact birth date, email, and gift preferences automatically.
+
+          {/* Right 5 Cols: Realistic Editorial Celebration Photograph */}
+          <div className="lg:col-span-5 relative min-h-[260px] lg:min-h-full">
+            <img
+              src="/assets/mastery/hero-circle-celebration.jpg"
+              alt="Multi-generational family and friends celebrating a birthday around a sunlit table"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#111B21] via-[#111B21]/25 to-transparent" />
+            <div className="absolute bottom-4 left-4 right-4 p-4 rounded-[18px] bg-[#111B21]/85 backdrop-blur-xs border border-white/15 text-white flex items-center justify-between gap-3">
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[1px] text-[#A4D4C5]">
+                  Automatic Birthday Collector
+                </div>
+                <div className="text-[14px] font-bold">
+                  Zero manual spreadsheets · Instant countdowns
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowCollectorForm(true)}
+                className="px-3.5 py-2 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[12px] font-semibold shrink-0 cursor-pointer"
+              >
+                Try Form
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MODULE 1: REDESIGNED 3 STEPS TO BIRTHDAY MASTERY WITH REALISTIC EDITORIAL PHOTOGRAPHY */}
+      <section className="rounded-[32px] bg-[#FCFBF7] border border-[#E6E0D3] p-6 sm:p-10 lg:p-12 space-y-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#E6E0D3] pb-6">
+          <div className="space-y-2 max-w-2xl">
+            <span className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[1.4px] text-[#FF5722]">
+              Effortless Birthday Collection · 3-Step Workflow
+            </span>
+            <h2 className="text-[28px] sm:text-[38px] font-bold text-[#111B21] tracking-tight leading-tight">
+              3 steps to birthday mastery!
+            </h2>
+          </div>
+          <p className="text-[14px] sm:text-[15px] text-[#4A5560] max-w-md">
+            Send your personalized collector link once and let your family and friends add their exact birth dates and gift wishlists directly.
           </p>
         </div>
 
-        {/* 3-Column Visual Steps (Modeled directly on user's reference design) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 pt-2">
-          {/* Step 1 */}
-          <div className="text-center space-y-4 px-2">
+        {/* 3 Realistic Photographic Editorial Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-7 lg:gap-8">
+          {/* Step 1 Card */}
+          <div className="rounded-[28px] bg-[#F4EFE6] border border-[#E6E0D3] p-4 sm:p-5 flex flex-col justify-between space-y-4">
             <MasteryStepLinkIcon />
-            <div className="space-y-2">
-              <h2 className="text-[22px] font-bold text-[#1D2B34]">
-                We give you a link
-              </h2>
-              <p className="text-[14px] sm:text-[15px] text-[#4A5560] leading-relaxed max-w-[32ch] mx-auto">
-                It’s customized with your name so everyone will recognize it’s from you.
+            <div className="px-1 pb-1 space-y-2">
+              <h3 className="text-[21px] font-bold text-[#111B21] tracking-tight">
+                We give you a personal link
+              </h3>
+              <p className="text-[14px] text-[#4A5560] leading-relaxed">
+                It’s customized with your name so everyone in your family and friend group immediately recognizes it’s from you.
               </p>
             </div>
           </div>
 
-          {/* Step 2 */}
-          <div className="text-center space-y-4 px-2">
+          {/* Step 2 Card */}
+          <div className="rounded-[28px] bg-[#F4EFE6] border border-[#E6E0D3] p-4 sm:p-5 flex flex-col justify-between space-y-4">
             <MasteryStepPhoneIcon />
-            <div className="space-y-2">
-              <h2 className="text-[22px] font-bold text-[#1D2B34]">
-                Send your link to family and friends
-              </h2>
-              <p className="text-[14px] sm:text-[15px] text-[#4A5560] leading-relaxed max-w-[34ch] mx-auto">
-                We import your contacts’ emails to save you time. Or you can enter them on your own. It’s up to you!
+            <div className="px-1 pb-1 space-y-2">
+              <h3 className="text-[21px] font-bold text-[#111B21] tracking-tight">
+                Send your link to family &amp; friends
+              </h3>
+              <p className="text-[14px] text-[#4A5560] leading-relaxed">
+                Import your contacts’ emails in one click, or share directly on WhatsApp and iMessage—it’s completely up to you.
               </p>
             </div>
           </div>
 
-          {/* Step 3 */}
-          <div className="text-center space-y-4 px-2">
+          {/* Step 3 Card */}
+          <div className="rounded-[28px] bg-[#F4EFE6] border border-[#E6E0D3] p-4 sm:p-5 flex flex-col justify-between space-y-4">
             <MasteryStepCakeIcon />
-            <div className="space-y-2">
-              <h2 className="text-[22px] font-bold text-[#1D2B34]">
-                You get the birthday
-              </h2>
-              <p className="text-[14px] sm:text-[15px] text-[#4A5560] leading-relaxed max-w-[32ch] mx-auto">
-                They enter their name, email, and birth date in our short form and you’re all set!
+            <div className="px-1 pb-1 space-y-2">
+              <h3 className="text-[21px] font-bold text-[#111B21] tracking-tight">
+                You get the birthday automatically
+              </h3>
+              <p className="text-[14px] text-[#4A5560] leading-relaxed">
+                They enter their name, email, birth date, and favorite treats in our short form—and their live countdown starts immediately!
               </p>
             </div>
           </div>
         </div>
 
-        {/* Interactive Personal Collector Link Bar */}
+        {/* Interactive Personal Collector Link Studio Bar */}
         <div className="rounded-[24px] bg-[#F4EFE6] border border-[#E6E0D3] p-5 sm:p-7 space-y-5">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
             {/* Customize Host Name */}
@@ -517,7 +589,7 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
           {/* Bottom Bar: Open Short Birthday Form or Full Invite Modal */}
           <div className="pt-3 border-t border-[#E6E0D3] flex flex-wrap items-center justify-between gap-3 text-[13px]">
             <div className="text-[#4A5560]">
-              Want to see what your friends &amp; family see when they open your link?
+              Preview or fill out the short birthday collector form your friends see:
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <button
@@ -526,9 +598,9 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
                   setShowCollectorForm(!showCollectorForm);
                   setShowBatchEmailDrawer(false);
                 }}
-                className="px-4 py-2 rounded-full bg-[#147D84] hover:bg-[#0f6369] text-white text-[13px] font-semibold inline-flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                className="px-4 py-2 rounded-full bg-[#111B21] hover:bg-[#24323B] text-white text-[13px] font-semibold inline-flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
               >
-                <Calendar className="w-3.5 h-3.5" />
+                <Calendar className="w-3.5 h-3.5 text-[#FF5722]" />
                 <span>
                   {showCollectorForm ? 'Hide Short Birthday Form' : 'Open Short Birthday Form (Receive Birthday)'}
                 </span>
@@ -617,11 +689,11 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
           {showCollectorForm && (
             <form
               onSubmit={handleShortFormSubmit}
-              className="mt-4 p-6 rounded-[20px] bg-[#FCFBF7] border-2 border-[#147D84] space-y-4"
+              className="mt-4 p-6 rounded-[20px] bg-[#FCFBF7] border-2 border-[#FF5722] space-y-4"
             >
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E6E0D3] pb-3">
                 <div>
-                  <span className="text-[12px] font-semibold text-[#147D84]">
+                  <span className="text-[12px] font-semibold text-[#FF5722]">
                     Step 3 Short Form · Recognized as {hostName}’s Personal Link
                   </span>
                   <h3 className="text-[18px] font-bold text-[#111B21] mt-0.5">
@@ -767,12 +839,12 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
         </div>
       </section>
 
-      {/* MODULE 2: CONNECTED FRIENDS & FAMILY PROFILES DIRECTORY */}
+      {/* MODULE 2: CONNECTED FRIENDS & FAMILY PROFILES DIRECTORY (WITH REALISTIC PORTRAITS & LIVE COUNTDOWNS) */}
       <section className="space-y-6">
         {/* Directory Header & Summary Metrics */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#E6E0D3] pb-5">
           <div className="space-y-1">
-            <div className="flex items-center gap-2 text-[13px] font-semibold text-[#147D84] tabular-nums">
+            <div className="flex items-center gap-2 text-[13px] font-semibold text-[#FF5722] tabular-nums">
               <span>{birthdays.length} Connected Profiles</span>
               <span aria-hidden="true">·</span>
               <span>{familyCount} Family</span>
@@ -844,7 +916,7 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
           </div>
         </div>
 
-        {/* Pending Invites View (or shown when 'pending' filter is active) */}
+        {/* Pending Invites View */}
         {(activeFilter === 'pending' || (activeFilter === 'all' && pendingInvites.length > 0)) && (
           <div className="rounded-[24px] bg-[#F4EFE6] border border-[#E6E0D3] p-5 sm:p-6 space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
@@ -883,7 +955,7 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
                     <button
                       type="button"
                       onClick={() => handleSimulateInviteAccepted(inv)}
-                      className="h-[36px] px-3.5 rounded-full bg-[#147D84] hover:bg-[#0f6369] text-white text-[12px] font-semibold cursor-pointer whitespace-nowrap"
+                      className="h-[36px] px-3.5 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-[12px] font-semibold cursor-pointer whitespace-nowrap"
                     >
                       Simulate Birthday Received
                     </button>
@@ -894,15 +966,16 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
           </div>
         )}
 
-        {/* Connected Profiles Grid */}
+        {/* Connected Profiles Grid with Realistic Portrait Photography */}
         {activeFilter !== 'pending' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProfiles.map((person) => {
+            {filteredProfiles.map((person, index) => {
               const daysUntil = calculateDaysUntilBirthday(person.birthDate, now);
               const exactCountdown = calculateExactTimeUntilBirthday(person.birthDate, now);
               const turningAge = calculateTurningAge(person.birthDate, now);
               const zodiac = getZodiacSign(person.birthDate);
               const shortDate = formatBirthDateShort(person.birthDate);
+              const portraitUrl = getPersonRealisticPortrait(person, index);
               const emailAddr =
                 person.email ||
                 person.googleProfile?.googleEmail ||
@@ -914,23 +987,33 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
                   className="rounded-[24px] bg-[#F4EFE6] border border-[#E6E0D3] p-6 flex flex-col justify-between gap-5"
                 >
                   <div className="space-y-4">
-                    {/* Top Profile Header */}
+                    {/* Top Profile Header with Realistic Photographic Portrait */}
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-3.5 min-w-0">
-                        <div className="w-13 h-13 rounded-full bg-[#FCFBF7] border border-[#D6CFC0] flex items-center justify-center text-2xl shrink-0">
-                          {person.avatarEmoji || '🎂'}
+                        <div className="relative w-14 h-14 rounded-full overflow-hidden bg-[#111B21] border-2 border-[#FCFBF7] shadow-xs shrink-0">
+                          <img
+                            src={portraitUrl}
+                            alt={person.name}
+                            referrerPolicy="no-referrer"
+                            onError={(e) => {
+                              const target = e.currentTarget;
+                              target.onerror = null;
+                              target.src = getFallbackPortraitDataUrl(person.name);
+                            }}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
                         <div className="min-w-0">
                           <h3 className="text-[18px] font-bold text-[#111B21] truncate">
                             {person.name}
                           </h3>
                           <div className="flex items-center gap-1.5 text-[12px] text-[#525E66]">
-                            <span className="capitalize font-medium text-[#111B21]">
+                            <span className="capitalize font-semibold text-[#111B21]">
                               {person.relationship}
                             </span>
                             <span aria-hidden="true">·</span>
                             <span>
-                              {person.googleConnected ? 'Connected Profile' : 'Circle Member'}
+                              {person.googleConnected ? 'Verified Profile' : 'Circle Member'}
                             </span>
                           </div>
                         </div>
