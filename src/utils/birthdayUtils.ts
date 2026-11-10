@@ -34,6 +34,93 @@ export function isBirthdayToday(birthDateStr: string, fromDate: Date = new Date(
   return fromDate.getMonth() + 1 === bMonth && fromDate.getDate() === bDay;
 }
 
+export interface ExactBirthdayCountdown {
+  isToday: boolean;
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  totalSeconds: number;
+  yearProgressPercent: number;
+}
+
+/**
+ * Calculates the exact real-time remaining (days, hours, minutes, seconds, and cycle progress %)
+ * until the next occurrence of a birthday (at 00:00:00 local time on the birthday).
+ */
+export function calculateExactTimeUntilBirthday(
+  birthDateStr: string,
+  now: Date = new Date()
+): ExactBirthdayCountdown {
+  if (!birthDateStr) {
+    return {
+      isToday: false,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      totalSeconds: 0,
+      yearProgressPercent: 0
+    };
+  }
+
+  const [, bMonth, bDay] = birthDateStr.split('-').map(Number);
+  if (!bMonth || !bDay) {
+    return {
+      isToday: false,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      totalSeconds: 0,
+      yearProgressPercent: 0
+    };
+  }
+
+  const todayCheck = isBirthdayToday(birthDateStr, now);
+  if (todayCheck) {
+    return {
+      isToday: true,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      totalSeconds: 0,
+      yearProgressPercent: 100
+    };
+  }
+
+  const currentYear = now.getFullYear();
+  let nextBday = new Date(currentYear, bMonth - 1, bDay, 0, 0, 0, 0);
+
+  if (nextBday.getTime() <= now.getTime()) {
+    nextBday = new Date(currentYear + 1, bMonth - 1, bDay, 0, 0, 0, 0);
+  }
+
+  const prevBday = new Date(nextBday.getFullYear() - 1, bMonth - 1, bDay, 0, 0, 0, 0);
+  const fullCycleMs = Math.max(1, nextBday.getTime() - prevBday.getTime());
+  const diffMs = Math.max(0, nextBday.getTime() - now.getTime());
+
+  const totalSeconds = Math.floor(diffMs / 1000);
+  const days = Math.floor(totalSeconds / (3600 * 24));
+  const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const elapsedMs = Math.max(0, fullCycleMs - diffMs);
+  const yearProgressPercent = Math.min(99, Math.max(4, Math.round((elapsedMs / fullCycleMs) * 100)));
+
+  return {
+    isToday: false,
+    days,
+    hours,
+    minutes,
+    seconds,
+    totalSeconds,
+    yearProgressPercent
+  };
+}
+
 /**
  * Calculates turning age on the upcoming birthday.
  */

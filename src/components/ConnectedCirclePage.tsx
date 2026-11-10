@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Copy,
   Check,
@@ -19,6 +19,7 @@ import {
 import { BirthdayPerson, InviteRecord, Relationship } from '../types/birthday';
 import {
   calculateDaysUntilBirthday,
+  calculateExactTimeUntilBirthday,
   calculateTurningAge,
   getZodiacSign,
   formatBirthDateShort,
@@ -185,6 +186,14 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
   // Directory Filter & Search State
   const [activeFilter, setActiveFilter] = useState<'all' | Relationship | 'pending'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [now, setNow] = useState<Date>(() => new Date());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setNow(new Date());
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   const cleanSlug =
     hostName
@@ -889,8 +898,9 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
         {activeFilter !== 'pending' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProfiles.map((person) => {
-              const daysUntil = calculateDaysUntilBirthday(person.birthDate);
-              const turningAge = calculateTurningAge(person.birthDate);
+              const daysUntil = calculateDaysUntilBirthday(person.birthDate, now);
+              const exactCountdown = calculateExactTimeUntilBirthday(person.birthDate, now);
+              const turningAge = calculateTurningAge(person.birthDate, now);
               const zodiac = getZodiacSign(person.birthDate);
               const shortDate = formatBirthDateShort(person.birthDate);
               const emailAddr =
@@ -932,6 +942,60 @@ export const ConnectedCirclePage: React.FC<ConnectedCirclePageProps> = ({
                         </div>
                         <div className="text-[11px] text-[#525E66] tabular-nums">{shortDate}</div>
                       </div>
+                    </div>
+
+                    {/* Live Visual Countdown Timer */}
+                    <div className="p-3.5 rounded-[16px] bg-[#FCFBF7] border border-[#E6E0D3] space-y-2">
+                      <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.8px] text-[#525E66]">
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5 text-[#FF5722]" />
+                          <span>Next Birthday Countdown</span>
+                        </span>
+                        <span className="tabular-nums text-[#111B21]">
+                          {exactCountdown.isToday ? 'Today! 🎂' : `${exactCountdown.yearProgressPercent}%`}
+                        </span>
+                      </div>
+
+                      {exactCountdown.isToday ? (
+                        <div className="py-1.5 px-3 rounded-[10px] bg-[#FF5722] text-white text-center font-bold text-[13px]">
+                          🎉 Happy Birthday Today! 🎉
+                        </div>
+                      ) : (
+                        <>
+                          <div className="grid grid-cols-4 gap-1.5 text-center">
+                            <div className="bg-[#F4EFE6] rounded-[10px] py-1 px-1">
+                              <div className="font-mono text-[16px] font-bold text-[#111B21] tabular-nums">
+                                {String(exactCountdown.days).padStart(2, '0')}
+                              </div>
+                              <div className="text-[9px] font-semibold uppercase text-[#525E66]">Days</div>
+                            </div>
+                            <div className="bg-[#F4EFE6] rounded-[10px] py-1 px-1">
+                              <div className="font-mono text-[16px] font-bold text-[#111B21] tabular-nums">
+                                {String(exactCountdown.hours).padStart(2, '0')}
+                              </div>
+                              <div className="text-[9px] font-semibold uppercase text-[#525E66]">Hrs</div>
+                            </div>
+                            <div className="bg-[#F4EFE6] rounded-[10px] py-1 px-1">
+                              <div className="font-mono text-[16px] font-bold text-[#111B21] tabular-nums">
+                                {String(exactCountdown.minutes).padStart(2, '0')}
+                              </div>
+                              <div className="text-[9px] font-semibold uppercase text-[#525E66]">Min</div>
+                            </div>
+                            <div className="bg-[#F4EFE6] rounded-[10px] py-1 px-1">
+                              <div className="font-mono text-[16px] font-bold text-[#FF5722] tabular-nums">
+                                {String(exactCountdown.seconds).padStart(2, '0')}
+                              </div>
+                              <div className="text-[9px] font-semibold uppercase text-[#525E66]">Sec</div>
+                            </div>
+                          </div>
+                          <div className="w-full h-1.5 rounded-full bg-[#E6E0D3] overflow-hidden">
+                            <div
+                              className="h-full rounded-full bg-[#FF5722] transition-all duration-500"
+                              style={{ width: `${exactCountdown.yearProgressPercent}%` }}
+                            />
+                          </div>
+                        </>
+                      )}
                     </div>
 
                     {/* Birthday & Contact Metadata */}

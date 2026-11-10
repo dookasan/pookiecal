@@ -1,8 +1,9 @@
-import React from 'react';
-import { Phone, MessageCircle, Calendar } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Phone, MessageCircle, Calendar, Clock } from 'lucide-react';
 import { BirthdayPerson } from '../types/birthday';
 import {
   calculateDaysUntilBirthday,
+  calculateExactTimeUntilBirthday,
   isBirthdayToday,
   calculateUpcomingAge,
   isMilestoneAge,
@@ -62,9 +63,19 @@ export const BirthdayCard: React.FC<BirthdayCardProps> = ({
   onOpenCardStudio,
   onOpenGoogleHub
 }) => {
-  const daysLeft = calculateDaysUntilBirthday(person.birthDate);
-  const isToday = isBirthdayToday(person.birthDate);
-  const age = calculateUpcomingAge(person.birthDate);
+  const [now, setNow] = useState<Date>(() => new Date());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setNow(new Date());
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const daysLeft = calculateDaysUntilBirthday(person.birthDate, now);
+  const exactCountdown = calculateExactTimeUntilBirthday(person.birthDate, now);
+  const isToday = isBirthdayToday(person.birthDate, now);
+  const age = calculateUpcomingAge(person.birthDate, now);
   const isMilestone = isMilestoneAge(age);
   const zodiac = getZodiacSign(person.birthDate);
 
@@ -81,6 +92,7 @@ export const BirthdayCard: React.FC<BirthdayCardProps> = ({
 
   const variant = CLAY_CARD_VARIANTS[colorIndex % CLAY_CARD_VARIANTS.length];
   const subTextColor = variant.isDarkSurface ? 'text-white/85' : 'text-[#3a3a3a]';
+  const isSoon = !isToday && daysLeft <= 7;
 
   return (
     <div
@@ -115,14 +127,81 @@ export const BirthdayCard: React.FC<BirthdayCardProps> = ({
             </div>
           </div>
 
-          {/* Badge Pill */}
-          <span className={`px-3 py-1 rounded-full text-[13px] font-medium tabular-nums shrink-0 ${variant.badgeBg}`}>
-            {isToday ? 'Today!' : daysLeft === 1 ? 'Tomorrow' : `${daysLeft}d · ${formattedDate}`}
+          {/* Date Pill */}
+          <span className={`px-3 py-1 rounded-full text-[13px] font-semibold tabular-nums shrink-0 ${variant.badgeBg}`}>
+            {formattedDate}
           </span>
         </div>
 
+        {/* Live Visual Countdown Timer Widget */}
+        <div className="mt-4 bg-[#fffaf0] text-[#0a0a0a] border border-[#e5e5e5] rounded-[16px] p-3.5 space-y-2.5">
+          <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[1px] text-[#525E66]">
+            <span className="inline-flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-[#FF5722]" />
+              <span>{isToday ? 'Birthday Celebration' : 'Time Until Next Birthday'}</span>
+            </span>
+            <span className="tabular-nums text-[#0a0a0a]">
+              {isToday ? 'Today! 🎂' : isSoon ? 'Coming Up Soon!' : `${exactCountdown.yearProgressPercent}% of year`}
+            </span>
+          </div>
+
+          {isToday ? (
+            <div className="py-2 px-3 rounded-[12px] bg-[#FF5722] text-white text-center font-bold text-[14px] tracking-wide">
+              🎉 Happy Birthday Today! Send a Wish Now 🎉
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-4 gap-2 text-center">
+                <div className="bg-[#f5f0e0] border border-[#e5e5e5] rounded-[10px] py-1.5 px-1">
+                  <div className="font-mono text-[18px] sm:text-[20px] font-bold text-[#0a0a0a] leading-tight tabular-nums">
+                    {String(exactCountdown.days).padStart(2, '0')}
+                  </div>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.8px] text-[#6a6a6a]">
+                    Days
+                  </div>
+                </div>
+
+                <div className="bg-[#f5f0e0] border border-[#e5e5e5] rounded-[10px] py-1.5 px-1">
+                  <div className="font-mono text-[18px] sm:text-[20px] font-bold text-[#0a0a0a] leading-tight tabular-nums">
+                    {String(exactCountdown.hours).padStart(2, '0')}
+                  </div>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.8px] text-[#6a6a6a]">
+                    Hrs
+                  </div>
+                </div>
+
+                <div className="bg-[#f5f0e0] border border-[#e5e5e5] rounded-[10px] py-1.5 px-1">
+                  <div className="font-mono text-[18px] sm:text-[20px] font-bold text-[#0a0a0a] leading-tight tabular-nums">
+                    {String(exactCountdown.minutes).padStart(2, '0')}
+                  </div>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.8px] text-[#6a6a6a]">
+                    Min
+                  </div>
+                </div>
+
+                <div className="bg-[#f5f0e0] border border-[#e5e5e5] rounded-[10px] py-1.5 px-1">
+                  <div className="font-mono text-[18px] sm:text-[20px] font-bold text-[#FF5722] leading-tight tabular-nums">
+                    {String(exactCountdown.seconds).padStart(2, '0')}
+                  </div>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.8px] text-[#6a6a6a]">
+                    Sec
+                  </div>
+                </div>
+              </div>
+
+              {/* Visual Progress Bar toward upcoming birthday */}
+              <div className="w-full h-1.5 rounded-full bg-[#eae3ce] overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-[#FF5722] transition-all duration-500"
+                  style={{ width: `${exactCountdown.yearProgressPercent}%` }}
+                />
+              </div>
+            </>
+          )}
+        </div>
+
         {/* Embedded Product UI Fragment (`product-mockup-card`) */}
-        <div className="mt-5 bg-[#fffaf0] text-[#0a0a0a] border border-[#e5e5e5] rounded-[16px] p-4 space-y-2">
+        <div className="mt-3 bg-[#fffaf0] text-[#0a0a0a] border border-[#e5e5e5] rounded-[16px] p-4 space-y-2">
           {person.notes ? (
             <p className="text-[14px] text-[#3a3a3a] line-clamp-2 leading-[1.45]">
               {person.notes}
