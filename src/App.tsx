@@ -34,6 +34,7 @@ import { AddEventModal } from './components/AddEventModal';
 import { InviteModal } from './components/InviteModal';
 import { AuthModal } from './components/AuthModal';
 import { LandingPage, WorkspaceTab } from './components/LandingPage';
+import { ConnectedCirclePage } from './components/ConnectedCirclePage';
 import { ClayLogoMark, ClayHeroScene, ClayFooterMountains } from './components/ClayIllustrations';
 import { initAuth, googleSignOut, AppUser, getActiveLocalSession } from './utils/googleAuth';
 
@@ -285,6 +286,7 @@ export default function App() {
       if (
         params.get('autostart') === '1' ||
         params.get('view') === 'app' ||
+        params.get('collect') === '1' ||
         params.get('invite') ||
         params.get('by')
       ) {
@@ -297,7 +299,25 @@ export default function App() {
   });
 
   // UI state
-  const [activeTab, setActiveTab] = useState<WorkspaceTab>('wall');
+  const [activeTab, setActiveTab] = useState<WorkspaceTab>(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('collect') === '1' || params.get('tab') === 'connections') {
+        return 'connections';
+      }
+    } catch {
+      // ignore
+    }
+    return 'wall';
+  });
+  const [autoOpenCollector] = useState<boolean>(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('collect') === '1';
+    } catch {
+      return false;
+    }
+  });
   const [relationshipFilter, setRelationshipFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -424,6 +444,7 @@ export default function App() {
                 </button>
                 {[
                   { id: 'wall', label: 'Birthdays' },
+                  { id: 'connections', label: 'My Circle' },
                   { id: 'events', label: 'Festivals & Visits' },
                   { id: 'googleHub', label: 'Google Hub' },
                   { id: 'party', label: 'Gift Pool' },
@@ -582,10 +603,10 @@ export default function App() {
                     + Plan Visit / Event
                   </button>
                   <button
-                    onClick={() => setIsInviteModalOpen(true)}
+                    onClick={() => setActiveTab('connections')}
                     className="h-[44px] px-5 bg-[#f5f0e0] text-[#0a0a0a] text-[14px] font-semibold rounded-[12px] cursor-pointer"
                   >
-                    Invite Circle ({invites.length})
+                    My Circle &amp; Collector Link ({birthdays.length})
                   </button>
                 </div>
               </div>
@@ -734,6 +755,24 @@ export default function App() {
               </div>
             )}
           </div>
+        )}
+
+        {/* View 1B: Connected Friends & Family Profiles + 3 Steps to Birthday Mastery */}
+        {activeTab === 'connections' && (
+          <ConnectedCirclePage
+            birthdays={birthdays}
+            invites={invites}
+            googleUser={googleUser}
+            onAddPerson={handleAddPerson}
+            onAddInvite={handleAddInvite}
+            onUpdateInvite={handleUpdateInvite}
+            onOpenCardStudio={handleOpenCardStudio}
+            onOpenCallModal={handleOpenCallModal}
+            onOpenGoogleHub={handleOpenGoogleHub}
+            onOpenInviteModal={() => setIsInviteModalOpen(true)}
+            onOpenAddBirthday={() => setIsAddModalOpen(true)}
+            autoOpenCollectorForm={autoOpenCollector}
+          />
         )}
 
         {/* View 2: Google Member Hub */}
